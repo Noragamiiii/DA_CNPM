@@ -1,12 +1,13 @@
 package CNPM;
-
+import java.util.List;
+import java.util.ArrayList;
 public class DangkiTiem {
 	private String idHodan;
 	private String idVaccine;
 	private int soluong;
 	private String ngaydk;
 	
-	
+	private List<DangkiTiem> dktiem = new ArrayList<DangkiTiem>();
 	public DangkiTiem(String idHodan, String idVaccine, int soluong, String ngaydk) {
 		super();
 		this.idHodan = idHodan;

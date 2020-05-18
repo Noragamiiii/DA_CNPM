@@ -47,16 +47,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 
 import CNPM.Connect_DB;
 public class Register {
 
 	private JFrame frmDangki;
 	private JTextField txtfullname;
-	// private ButtonGroup gen;
-	private JTextField txtsogiayphep;
 	private JTextField txtusername;
 	private JPasswordField passwordField;
 	private JPasswordField repasswordField;
@@ -227,17 +227,6 @@ public class Register {
 		lbldiachi.setHorizontalAlignment(SwingConstants.LEFT);
 		lbldiachi.setBounds(52, 197, 60, 21);
 		personalinfo.add(lbldiachi);
-
-		JLabel lblsogiayphep = new JLabel("S\u1ED1 gi\u1EA5y ph\u00E9p");
-		lblsogiayphep.setHorizontalAlignment(SwingConstants.LEFT);
-		lblsogiayphep.setBounds(52, 321, 89, 32);
-		personalinfo.add(lblsogiayphep);
-
-		txtsogiayphep = new JTextField();
-		txtsogiayphep.setBorder(null);
-		txtsogiayphep.setBounds(163, 321, 219, 27);
-		personalinfo.add(txtsogiayphep);
-		txtsogiayphep.setColumns(10);
 		frmDangki.getContentPane().add(personalinfo);
 
 		JLabel lblSdt = new JLabel("S\u1ED1 \u0111i\u1EC7n tho\u1EA1i");
@@ -292,22 +281,33 @@ public class Register {
 		btnregister.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
-				String text = group.getSelection().getActionCommand();// cai nao  đc chọn trong 3 cái radiobutton male female..
+				String username = txtusername.getText();
+				String password = passwordField.getText();
+				String fullname = txtfullname.getText();
+				String gender = group.getSelection().getActionCommand();// cai nao  đc chọn trong 3 cái radiobutton male female...
+				String Dob =  cbyear.getSelectedItem().toString() + "-" + cbmonth.getSelectedItem().toString()+ "-" +  cbDay.getSelectedItem().toString() ;
+				//java.util.Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(Dob);
+				String phonenumber = txtsdt.getText();
+				String address = textAreaadd.getText();
+				
 				if(txtfullname.getText() != null && group.getSelection()!= null && cbDay != null && cbmonth!= null
-						&& cbyear!= null && txtsdt.getText() != null && txtsogiayphep.getText() != null && textAreaadd.getText() != null 
+						&& cbyear!= null && txtsdt.getText() != null &&  textAreaadd.getText() != null 
 						&& txtusername.getText()!= null && passwordField.getText() != null && repasswordField.getText() != null) {
 					if(passwordField.getText().equals(repasswordField.getText())) {
 						try {
-							String sql = "insert into HD(username, ipassword, hoten, tuoi, gioitinh, sodienthoai, diachi,  sogiayphep) values ( ?, ?, ?, ?, ?, ?, ?, ?)";
+							String sql = "insert into HoDan(Username, iPassword, Fullname, Gender, PhoneNumber, iAddress,  Dob) values ( ?, ?, ?, ?, ?, ?, ?)";
 							PreparedStatement pre = connect.prepareStatement(sql);
-							pre.setString(1, txtusername.getText() );
-							pre.setString(2, passwordField.getText());
-							pre.setString(3, txtfullname.getText());
-							//pre.setInt(4,  2020 - cbyear.get);
-							pre.setString(5, text);
-							pre.setString(6, txtsdt.getText());
-							pre.setString(7, textAreaadd.getText() );
-							pre.setString(8, txtsogiayphep.getText());
+							pre.setString(2, username );
+							pre.setString(3, password);
+							pre.setString(4, fullname);
+							pre.setString(5, gender);
+							pre.setString(6, phonenumber);
+							pre.setString(7, address);
+							//pre.setDate(8, date1);
+							
+							pre.execute();
+							JOptionPane.showMessageDialog(null, "Successfull Register!");					
+							pre.close();
 							//con id vatnuoi, id hodan duoc them sau all co 10 field
 						}catch(Exception ex) {
 							JOptionPane.showMessageDialog(null, "System Error!" + ex);
@@ -362,6 +362,13 @@ public class Register {
 		});
 		lbldangnhap.setBounds(200, 355, 65, 14);
 		account.add(lbldangnhap);
+		
+	}
+
+	public void Show() {
+		// TODO Auto-generated method stub
+		frmDangki.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmDangki.setVisible(true);
 	}
 }
 

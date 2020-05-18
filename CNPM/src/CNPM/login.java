@@ -126,7 +126,7 @@ public class login {
 			public void actionPerformed(ActionEvent e) {
 				try {
 
-					String url = "select * from HoDan where username = ? and password = ?";
+					String url = "select * from HoDan where Username = ? and iPassword = ?";
 					PreparedStatement pre = connect.prepareStatement(url);
 					pre.setString(1, txtusername.getText());
 					pre.setString(2, passwordField.getText());
@@ -170,7 +170,10 @@ public class login {
 		lblnewacc.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				frmngNhp.dispose();
 				Register regist = new Register();
+				regist.Show();
+				
 				// regist.setVisible(true;)
 
 			}

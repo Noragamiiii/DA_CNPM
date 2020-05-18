@@ -1,12 +1,12 @@
 package CNPM;
 
-import java.awt.List;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Hodan {
-	private String idHodan;
 	
-
-
+	private List<Hodan> hodan = new ArrayList<Hodan>();
+	private String idHodan;
 	private String idVatnuoi;
 	private String Username;
 	private String Password;
@@ -15,10 +15,11 @@ public class Hodan {
 	private String Gender;
 	private String Phonenumber;
 	private String Address;
-	private String sogiayphep;
 	
 	
-	
+	public List<Hodan>  gethodan(){
+		return this.hodan;
+	}
 	public String getIdHodan() {
 		return idHodan;
 	}
@@ -109,19 +110,11 @@ public class Hodan {
 	}
 
 
-	public String getSogiayphep() {
-		return sogiayphep;
-	}
-
-
-	public void setSogiayphep(String sogiayphep) {
-		this.sogiayphep = sogiayphep;
-	}
 	
-	  List<Hodan> hodan = new ArrayList<Hodan>();
+	 
 
 	public Hodan(String idHodan, String idVatnuoi, String username, String password, String fullname, String dob,
-			String gender, String phonenumber, String address, String sogiayphep) {
+			String gender, String phonenumber, String address) {
 		super();
 		this.idHodan = idHodan;
 		this.idVatnuoi = idVatnuoi;
@@ -132,14 +125,16 @@ public class Hodan {
 		Gender = gender;
 		Phonenumber = phonenumber;
 		Address = address;
-		this.sogiayphep = sogiayphep;
+		
 	}
 	public void Add() {
 		
 	}
 	@Override
 	public String toString() {
-	 return String.format("Hodan[idHodan = %s, idVatnuoi = %s, username = %s, password = %s, fullname = %s, dob = %s, gender = %s,  phonenumber = %s, address = %s, sogiayphep = %s ]",  idHodan, idVatnuoi	, Username, Password, Fullname, Dob, Gender, Phonenumber, sogiayphep);
+	 return String.format("Hodan[idHodan = %s, idVatnuoi = %s, username = %s, password = %s, fullname = %s, dob = %s, "
+	 		+ "gender = %s,  phonenumber = %s, address = %s]", 
+	 		idHodan, idVatnuoi	, Username, Password, Fullname, Dob, Gender, Phonenumber);
 }
 	
 
