@@ -2,6 +2,7 @@ package CNPM;
 
 import java.awt.EventQueue;
 
+import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -51,6 +52,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Enumeration;
 
 import CNPM.Connect_DB;
 public class Register {
@@ -256,7 +258,10 @@ public class Register {
 				String username = txtusername.getText();
 				//String password = passwordField.getText();
 				String fullname = txtfullname.getText();
-				String gender = group.getSelection().getActionCommand();// cai nao  đc chọn trong 3 cái radiobutton male female...
+				String gender = group.getSelection().getActionCommand();
+				String Gender = getSelectedButtonText(group);
+//				String Gender = group.getSelection().getText().ToString();
+				// cai nao  đc chọn trong 3 cái radiobutton male female...
 //				String Dob =  cbyear.getSelectedItem().toString() + "-" + cbmonth.getSelectedItem().toString()+ "-" +  cbDay.getSelectedItem().toString() ;
 //				java.util.Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(Dob);
 				String Dob = txtdob.getText();
@@ -281,16 +286,16 @@ public class Register {
 							pre.setString(1, username );
 							pre.setString(2, pass);
 							pre.setString(3, fullname);
-							pre.setString(4, gender);
+							pre.setString(4, Gender);
 							pre.setString(5, phonenumber);
 							pre.setString(6, address);
 							pre.setString(7,  Dob);
-							//pre.setDate(8, date1);
+							
 							
 							pre.execute();
 							JOptionPane.showMessageDialog(null, "Successfull Register!");					
 							pre.close();
-							//con id vatnuoi, id hodan duoc them sau all co 10 field
+							
 						}catch(Exception ex) {
 							JOptionPane.showMessageDialog(null, "System Error!" + ex);
 						}
@@ -347,6 +352,17 @@ public class Register {
 		
 	}
 
+	String getSelectedButtonText(ButtonGroup buttonGroup) {
+	    for (Enumeration buttons = buttonGroup.getElements(); buttons.hasMoreElements();) {
+	        AbstractButton button = (AbstractButton) buttons.nextElement();
+
+	        if (button.isSelected()) {
+	            return button.getText();
+	        }
+	    }
+
+	    return null;
+	}
 	public void Show() {
 		// TODO Auto-generated method stub
 		frmDangki.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
