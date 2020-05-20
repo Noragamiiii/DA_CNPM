@@ -62,6 +62,7 @@ public class Register {
 	private JPasswordField repasswordField;
 	private JTextField txtsdt;
 	Connection connect = null;
+	private JTextField txtdob;
 	
 
 	/**
@@ -166,33 +167,6 @@ public class Register {
 		lbldob.setBounds(52, 140, 77, 24);
 		personalinfo.add(lbldob);
 
-		/*String day[] = new String[100];
-		for (int i = 1; i <= 31; i++) {
-			// day[i]= new StringBuffer().append(i).toString(); new String[] {"Ng\u00E0y"})
-			day[i] = new Integer(i).toString();
-		}
-
-		String date[] = { "1", "2", "3", "4" };*/
-		JComboBox cbDay = new JComboBox();
-		cbDay.setName("Ngày");
-		cbDay.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", 
-																"11", "12", "13", "14", "15", "16", "17", "18", "19", 
-																"20", "21", "22", "23", "24", "25", "26", "27", "28", 
-																"29", "30", "31"}));
-		// cbDay.setToolTipText("");
-		cbDay.setBounds(163, 144, 60, 20);
-		personalinfo.add(cbDay);
-
-		/*String month[] = new String[100];
-		for (int i = 0; i <= 12; i++) {
-			month[i] = new StringBuffer().append(i).toString();
-		}*/
-		JComboBox cbmonth = new JComboBox();
-		cbmonth.setName("Tháng");
-		cbmonth.setModel(new DefaultComboBoxModel(new String[] {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"}));
-		cbmonth.setBounds(245, 144, 60, 20);
-		personalinfo.add(cbmonth);
-
 		/*String year[] = new String[150];
 		for (int j = 0; j <= 100; j++)
 			for (int i = 1920; i <= 2020; i++) {
@@ -209,15 +183,7 @@ public class Register {
 				"1991",	"1992",	"1993",	"1994",	"1995",	"1996",	"1997",	"1998",	"1999",	
 				"2000",	"2001",	"2002",	"2003",	"2004",	"2005",	"2006",	"2007",	"2008",	
 				"2009",	"2010",	"2011",	"2012",	"2013",	"2014",	"2015",	"2016",	"2017",	
-				"2018",	"2019"};	
-		
-		JComboBox cbyear = new JComboBox(year);
-		cbyear.setName("Năm");
-		//cbyear.setModel(new DefaultComboBoxModel(new String[] { "N\u0103m" }));
-		//cbyear.setT
-		//cbyear.setToolTipText("year");
-		cbyear.setBounds(322, 144, 60, 20);
-		personalinfo.add(cbyear);
+				"2018",	"2019"};
 
 		JTextArea textAreaadd = new JTextArea();
 		textAreaadd.setBounds(163, 188, 219, 60);
@@ -238,6 +204,12 @@ public class Register {
 		txtsdt.setBorder(null);
 		txtsdt.setBounds(163, 270, 219, 27);
 		personalinfo.add(txtsdt);
+		
+		txtdob = new JTextField();
+		txtdob.setText("yyyy-MM-DD");
+		txtdob.setBounds(163, 142, 219, 27);
+		personalinfo.add(txtdob);
+		txtdob.setColumns(10);
 
 		JPanel account = new JPanel();
 		account.setBackground(SystemColor.activeCaptionBorder);
@@ -282,27 +254,37 @@ public class Register {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				String username = txtusername.getText();
-				String password = passwordField.getText();
+				//String password = passwordField.getText();
 				String fullname = txtfullname.getText();
 				String gender = group.getSelection().getActionCommand();// cai nao  đc chọn trong 3 cái radiobutton male female...
-				String Dob =  cbyear.getSelectedItem().toString() + "-" + cbmonth.getSelectedItem().toString()+ "-" +  cbDay.getSelectedItem().toString() ;
-				//java.util.Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(Dob);
+//				String Dob =  cbyear.getSelectedItem().toString() + "-" + cbmonth.getSelectedItem().toString()+ "-" +  cbDay.getSelectedItem().toString() ;
+//				java.util.Date date1 = new SimpleDateFormat("dd/MM/yyyy").parse(Dob);
+				String Dob = txtdob.getText();
 				String phonenumber = txtsdt.getText();
 				String address = textAreaadd.getText();
 				
-				if(txtfullname.getText() != null && group.getSelection()!= null && cbDay != null && cbmonth!= null
-						&& cbyear!= null && txtsdt.getText() != null &&  textAreaadd.getText() != null 
-						&& txtusername.getText()!= null && passwordField.getText() != null && repasswordField.getText() != null) {
-					if(passwordField.getText().equals(repasswordField.getText())) {
+				char getpass[], getrepass[];
+				String pass = "";
+				String repass = "";
+				getpass = passwordField.getPassword();
+				getrepass = repasswordField.getPassword();
+				
+				repass = String.valueOf(getrepass);
+				pass = String.valueOf(getpass);
+				
+				if(txtfullname.getText() != null && group.getSelection()!= null && txtdob != null && txtsdt.getText() != null &&  textAreaadd.getText() != null 
+						&& txtusername.getText()!= null && pass != null && repass != null) {
+					if(pass.equals(repass)) {
 						try {
 							String sql = "insert into HoDan(Username, iPassword, Fullname, Gender, PhoneNumber, iAddress,  Dob) values ( ?, ?, ?, ?, ?, ?, ?)";
 							PreparedStatement pre = connect.prepareStatement(sql);
-							pre.setString(2, username );
-							pre.setString(3, password);
-							pre.setString(4, fullname);
-							pre.setString(5, gender);
-							pre.setString(6, phonenumber);
-							pre.setString(7, address);
+							pre.setString(1, username );
+							pre.setString(2, pass);
+							pre.setString(3, fullname);
+							pre.setString(4, gender);
+							pre.setString(5, phonenumber);
+							pre.setString(6, address);
+							pre.setString(7,  Dob);
 							//pre.setDate(8, date1);
 							
 							pre.execute();
@@ -357,7 +339,7 @@ public class Register {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				login logi = new login();
-				 //logi.setVisible(true);
+				logi.Show();
 			}
 		});
 		lbldangnhap.setBounds(200, 355, 65, 14);

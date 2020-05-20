@@ -128,8 +128,16 @@ public class login {
 
 					String url = "select * from HoDan where Username = ? and iPassword = ?";
 					PreparedStatement pre = connect.prepareStatement(url);
-					pre.setString(1, txtusername.getText());
-					pre.setString(2, passwordField.getText());
+					
+					char getpass[];
+					String password = "";
+					getpass = passwordField_1.getPassword();
+					password = String.valueOf(getpass);
+					
+					pre.setString(1, textField.getText());
+//					pre.setString(2, new String(passwordField.getPassword()));
+					pre.setString(2, password);
+					
 					ResultSet rs = pre.executeQuery();
 					int count = 0;
 					while (rs.next()) {
@@ -139,9 +147,11 @@ public class login {
 						JOptionPane.showMessageDialog(null, "Username and Password are correct!");
 						// goto Home page
 					}
-					if (count > 1) {
+					if (count > 1) {// nếu check bên register thì khỏi cần đây
 							// chua biet lam gi, nen de do cai da
-					} else {
+						JOptionPane.showMessageDialog(null, "Duplicate username and password");
+					}
+					else {
 						JOptionPane.showMessageDialog(null, "Username or Password is incorrect. Try again");
 					}
 
@@ -173,8 +183,6 @@ public class login {
 				frmngNhp.dispose();
 				Register regist = new Register();
 				regist.Show();
-				
-				// regist.setVisible(true;)
 
 			}
 		});
@@ -247,5 +255,10 @@ public class login {
 		 * label.setHorizontalAlignment(SwingConstants.CENTER); label.setIcon(new
 		 * ImageIcon("E:\\tiu\\icon\\agriculture (2).png"));
 		 */
+	}
+	public void Show() {
+		frmngNhp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmngNhp.setVisible(true) ;
+	
 	}
 }
