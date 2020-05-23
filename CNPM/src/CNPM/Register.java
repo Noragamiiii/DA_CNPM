@@ -105,8 +105,6 @@ public class Register {
 		frmDangki.getContentPane().setLayout(null);
 		frmDangki.setTitle("\u0110\u0103ng k\u00ED th\u00E0nh vi\u00EAn");
 		frmDangki.setBounds(100, 100, 910, 488);
-		// frmDangki.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		frmDangki.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		// frmDangki.getContentPane().setLayout(null);
 
@@ -174,7 +172,7 @@ public class Register {
 			for (int i = 1920; i <= 2020; i++) {
 				year[j] = new StringBuffer().append(i).toString();
 			}*/
-		String year[] = { "1920",	"1921",	"1922",	"1923",	"1924",	"1925",	"1926",	"1927",	
+		/*String year[] = { "1920",	"1921",	"1922",	"1923",	"1924",	"1925",	"1926",	"1927",	
 				"1928","1929",	"1930",	"1931",	"1932",	"1933",	"1934",	"1935",	"1936",	
 				"1937",	"1938",	"1939",	"1940",	"1941",	"1942",	"1943",	"1944",	"1945",	
 				"1946",	"1947",	"1948",	"1949",	"1950",	"1951",	"1952",	"1953",	"1954",	
@@ -186,7 +184,7 @@ public class Register {
 				"2000",	"2001",	"2002",	"2003",	"2004",	"2005",	"2006",	"2007",	"2008",	
 				"2009",	"2010",	"2011",	"2012",	"2013",	"2014",	"2015",	"2016",	"2017",	
 				"2018",	"2019"};
-
+*/
 		JTextArea textAreaadd = new JTextArea();
 		textAreaadd.setBounds(163, 188, 219, 60);
 		personalinfo.add(textAreaadd);
@@ -208,6 +206,7 @@ public class Register {
 		personalinfo.add(txtsdt);
 		
 		txtdob = new JTextField();
+		txtdob.setBorder(null);
 		txtdob.setText("yyyy-MM-DD");
 		txtdob.setBounds(163, 142, 219, 27);
 		personalinfo.add(txtdob);

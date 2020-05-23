@@ -1,9 +1,16 @@
 package CNPM;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Vacxin {
 	private String idVaccine;
 	private String tenvaccine;
 	private int soluong;
+	private List<Vacxin> vaccine = new ArrayList<Vacxin>();
+	public List<Vacxin> getvaccine(){
+		return this.vaccine;
+	}
 	
 	public Vacxin(String idVaccine, String tenvaccine, int soluong) {
 		super();

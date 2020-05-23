@@ -1,9 +1,17 @@
 package CNPM;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Animal {
 	private String idVatnuoi;
 	private String tenVatnuoi;
 	
+	private List<Animal> ani = new ArrayList<Animal>();
+	
+	public List<Animal> getani(){
+		return this.ani;
+	}
 	public String getIdVatnuoi() {
 		return idVatnuoi;
 	}
