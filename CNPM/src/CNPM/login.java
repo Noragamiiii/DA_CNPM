@@ -44,24 +44,26 @@ import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.UIManager;
 import java.awt.Cursor;
+import java.awt.Dimension;
+
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 public class login {
 
 	private JFrame frmLogin;
-//	private JTextField txtusername;
-//	private JPasswordField passwordField;
-//	private JTextField textField;
-//	private JPasswordField passwordField_1;
-	private JButton btnExitt, btnminimize;
+
+	private JButton btnExitt, btnminimize, btnlogin, btncancel;
+
 	static boolean maximized = true;
 	int xMouse, yMouse;
 	Connection connect = null;
-//	private JTextField textField_1;
-//	private JTextField textField_2;
+
 	private JTextField txtUsername;
 	private JPasswordField passwordField;
-
+	private JLabel lblNewLabel, lblsignin, lblusername, lblmatkhau, lblnewacc;
+	private JCheckBox chckbxShowPassword;
+	private JPanel panel, pnlHeader;
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -74,6 +76,7 @@ public class login {
 			}
 		});
 	}
+	
 
 	public login() {
 		try {
@@ -83,67 +86,53 @@ public class login {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
+		
+		
 		frmLogin = new JFrame();
 		frmLogin.setResizable(false);
-		frmLogin.setBounds(new Rectangle(0, 0, 700, 311));//getContentPane().
-		frmLogin.setIconImage(Toolkit.getDefaultToolkit().getImage("E:\\tiu\\icon\\user.png"));
+		frmLogin.setBounds(342, 192, 700, 350);// getContentPane().
 		frmLogin.setTitle("Đăng nhập");
-		//frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLogin.getContentPane().setBackground(SystemColor.activeCaption);
 		frmLogin.setUndecorated(true);
-		JPanel panel = new JPanel();
+//		frmLogin.setLocationRelativeTo(null);
+		
+		panel = new JPanel();
 		panel.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
 
-		JLabel lblNewLabel = new JLabel();
-		lblNewLabel.setBounds(361, 11, 323, 279);
+		lblNewLabel = new JLabel();
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setBorder(new MatteBorder(0, 2, 0, 0, (Color) new Color(0, 0, 0)));
 		lblNewLabel.setIcon(new ImageIcon(login.class.getResource("/gambar/people.png")));
 
-		JLabel lblsignin = new JLabel();
-		lblsignin.setBounds(104, 11, 150, 43);
+		lblsignin = new JLabel();
 		lblsignin.setText("Đăng nhập");
 		lblsignin.setBackground(Color.LIGHT_GRAY);
 		lblsignin.setFont(new Font("Arial", Font.BOLD, 14));
 		lblsignin.setHorizontalAlignment(SwingConstants.CENTER);
 
-		JLabel lblusername = new JLabel();
-		lblusername.setBounds(22, 76, 96, 22);
+		lblusername = new JLabel();
 		lblusername.setText("Tên đăng nhập");
 		lblusername.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		lblusername.setHorizontalAlignment(SwingConstants.CENTER);
 
-		JLabel lblmatkhau = new JLabel();
-		lblmatkhau.setBounds(22, 137, 72, 20);
+		lblmatkhau = new JLabel();
 		lblmatkhau.setText("Mật khẩu");
 		lblmatkhau.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		lblmatkhau.setHorizontalAlignment(SwingConstants.CENTER);
 
-//		textField = new JTextField();
-//		textField.setFont(new Font("Arial", Font.PLAIN, 12));
-//		textField.setBounds(128, 71, 161, 29);
-//		textField.setBorder(null);
-//		textField.setColumns(10);
-
-//		passwordField_1 = new JPasswordField();
-//		passwordField_1.setBounds(128, 127, 161, 29);
-//		passwordField_1.setBorder(null);
-
-		JButton btnlogin = new JButton();
-		btnlogin.setBounds(87, 235, 91, 29);
+		btnlogin = new JButton();
 		btnlogin.setText("Đăng nhập");
 		btnlogin.setFocusable(false);
 		btnlogin.setFont(new Font("Arial", Font.BOLD, 16)); // NOI18N
 		btnlogin.setForeground(new Color(44, 62, 80));
 		btnlogin.setContentAreaFilled(false);
 		btnlogin.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		
+
 		btnlogin.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				try {
 
-					String url = "select * from HoDan where Username = ? and iPassword = ?";
+					String url = "select * from Admin where Username = ? and iPassword = ?";
 					PreparedStatement pre = connect.prepareStatement(url);
 
 					char getpass[];
@@ -160,11 +149,13 @@ public class login {
 						count = count + 1;
 					}
 					if (count == 1) {
-						JOptionPane.showMessageDialog(null, "Username and Password are correct!");
+						// JOptionPane.showMessageDialog(null, "Username and Password are correct!");
 						Dashboard db = new Dashboard();
-						db.show();  // goto Dashboard
+						db.setVisible(true);
+						frmLogin.setVisible(false);
+						// goto Dashboard
 					}
-					
+
 					else {
 						JOptionPane.showMessageDialog(null, "Username or Password is incorrect. Try again");
 					}
@@ -181,8 +172,7 @@ public class login {
 		btnlogin.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 153)));
 		btnlogin.setFont(new Font("Segoe UI", Font.BOLD, 12));
 
-		JButton btncancel = new JButton();
-		btncancel.setBounds(211, 234, 91, 29);
+		btncancel = new JButton();
 		btncancel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 153)));
 		btncancel.setText("Hủy");
 		btncancel.setFocusable(false);
@@ -191,8 +181,7 @@ public class login {
 		btncancel.setContentAreaFilled(false);
 		btncancel.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-		JLabel lblnewacc = new JLabel();
-		lblnewacc.setBounds(124, 274, 150, 22);
+		lblnewacc = new JLabel();
 		lblnewacc.setText("Đăng kí tài khoản mới");
 		lblnewacc.setFont(new Font("Segoe UI", Font.PLAIN, 11));
 		lblnewacc.addMouseListener(new MouseAdapter() {
@@ -206,8 +195,7 @@ public class login {
 		});
 		lblnewacc.setHorizontalAlignment(SwingConstants.CENTER);
 
-		JCheckBox chckbxShowPassword = new JCheckBox("Show password");
-		chckbxShowPassword.setBounds(128, 189, 126, 23);
+		chckbxShowPassword = new JCheckBox("Show password");
 		chckbxShowPassword.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
 		chckbxShowPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -218,181 +206,204 @@ public class login {
 				}
 			}
 		});
-		
-		JPanel pnlHeader = new JPanel();
-		pnlHeader.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		pnlHeader.setForeground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
-		pnlHeader.setBackground(Color.WHITE);
+
+		pnlHeader = new JPanel();
+		pnlHeader.setBackground(UIManager.getColor("InternalFrame.inactiveBorderColor"));
 		pnlHeader.addMouseMotionListener(new MouseMotionAdapter() {
-	            public void mouseDragged(MouseEvent evt) {
-	                pnlHeaderMouseDragged(evt);
-	            }
-	        });
-	     pnlHeader.addMouseListener(new MouseAdapter() {
-	            public void mousePressed(MouseEvent evt) {
-	                pnlHeaderMousePressed(evt);
-	            }
-	        });
+			public void mouseDragged(MouseEvent evt) {
+				pnlHeaderMouseDragged(evt);
+			}
+		});
+		pnlHeader.addMouseListener(new MouseAdapter() {
+			public void mousePressed(MouseEvent evt) {
+				pnlHeaderMousePressed(evt);
+			}
+		});
 		btnExitt = new JButton();
 		btnExitt.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnExitt.setBorder(null);
-		
+
 		btnminimize = new JButton();
 		btnminimize.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		btnminimize.setBorder(null);
 		btnminimize.setOpaque(true);
 		btnminimize.setFocusable(false);
 		btnminimize.setContentAreaFilled(false);
-		btnminimize.setBackground(Color.WHITE);
+		//btnminimize.setBackground(Color.WHITE);
+		
 		GroupLayout gl_pnlHeader = new GroupLayout(pnlHeader);
 		gl_pnlHeader.setHorizontalGroup(
 			gl_pnlHeader.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_pnlHeader.createSequentialGroup()
-					.addContainerGap(578, Short.MAX_VALUE)
+					.addContainerGap(580, Short.MAX_VALUE)
 					.addComponent(btnminimize, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnExitt, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE))
+					.addComponent(btnExitt, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
 		gl_pnlHeader.setVerticalGroup(
 			gl_pnlHeader.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnlHeader.createSequentialGroup()
-					.addGroup(gl_pnlHeader.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(btnExitt, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(btnminimize, Alignment.LEADING, GroupLayout.DEFAULT_SIZE, 25, Short.MAX_VALUE))
+					.addGroup(gl_pnlHeader.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnExitt, 0, 0, Short.MAX_VALUE)
+						.addComponent(btnminimize, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap())
 		);
 		pnlHeader.setLayout(gl_pnlHeader);
 		GroupLayout groupLayout = new GroupLayout(frmLogin.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
-				.addComponent(panel, GroupLayout.PREFERRED_SIZE, 684, GroupLayout.PREFERRED_SIZE)
-				.addComponent(pnlHeader, GroupLayout.DEFAULT_SIZE, 684, Short.MAX_VALUE)
+				.addComponent(pnlHeader, GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
+				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addGap(24)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE))
-				.addComponent(pnlHeader, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
+					.addComponent(pnlHeader, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
+					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap())
 		);
-		
+
 		txtUsername = new JTextField();
 		txtUsername.setBorder(null);
-		txtUsername.setBounds(128, 74, 184, 28);
 		txtUsername.setColumns(10);
-		panel.setLayout(null);
-		panel.add(lblNewLabel);
-		panel.add(lblsignin);
-		panel.add(lblusername);
-		panel.add(lblmatkhau);
-		panel.add(btnlogin);
-		panel.add(btncancel);
-		panel.add(lblnewacc);
-		panel.add(chckbxShowPassword);
-		panel.add(txtUsername);
-		
+
 		passwordField = new JPasswordField();
 		passwordField.setBorder(null);
-		passwordField.setBounds(128, 137, 184, 29);
-		panel.add(passwordField);
-		
-//		textField_1 = new JTextField();
-//		textField_1.setBorder(null);
-//		textField_1.setBounds(126, 76, 176, 29);
-//		panel.add(textField_1);
-//		textField_1.setColumns(10);
-		
-//		textField_2 = new JTextField();
-//		textField_2.setBorder(null);
-//		textField_2.setColumns(10);
-//		textField_2.setBounds(126, 132, 176, 29);
-//		panel.add(textField_2);
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel
+				.createSequentialGroup().addGap(22)
+				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_panel.createSequentialGroup().addGap(82).addComponent(lblsignin,
+								GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+								.addComponent(lblusername, GroupLayout.PREFERRED_SIZE, 96, GroupLayout.PREFERRED_SIZE)
+								.addGap(10)
+								.addComponent(txtUsername, GroupLayout.PREFERRED_SIZE, 184, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup()
+								.addComponent(lblmatkhau, GroupLayout.PREFERRED_SIZE, 72, GroupLayout.PREFERRED_SIZE)
+								.addGap(34).addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 184,
+										GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup().addGap(106).addComponent(chckbxShowPassword,
+								GroupLayout.PREFERRED_SIZE, 126, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup().addGap(65)
+								.addComponent(btnlogin, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE)
+								.addGap(33)
+								.addComponent(btncancel, GroupLayout.PREFERRED_SIZE, 91, GroupLayout.PREFERRED_SIZE))
+						.addGroup(gl_panel.createSequentialGroup().addGap(102).addComponent(lblnewacc,
+								GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE)))
+				.addGap(49).addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 323, GroupLayout.PREFERRED_SIZE)));
+		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel
+				.createSequentialGroup().addGap(11)
+				.addGroup(gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel.createSequentialGroup()
+						.addComponent(lblsignin, GroupLayout.PREFERRED_SIZE, 43, GroupLayout.PREFERRED_SIZE).addGap(20)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup().addGap(2).addComponent(lblusername,
+										GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
+								.addComponent(txtUsername, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
+						.addGap(35)
+						.addGroup(
+								gl_panel.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblmatkhau, GroupLayout.PREFERRED_SIZE, 20,
+												GroupLayout.PREFERRED_SIZE)
+										.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 29,
+												GroupLayout.PREFERRED_SIZE))
+						.addGap(23).addComponent(chckbxShowPassword).addGap(22)
+						.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+								.addGroup(gl_panel.createSequentialGroup().addGap(1).addComponent(btnlogin,
+										GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+								.addComponent(btncancel, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+						.addGap(10).addComponent(lblnewacc, GroupLayout.PREFERRED_SIZE, 22, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 279, GroupLayout.PREFERRED_SIZE))));
+		panel.setLayout(gl_panel);
+
 		frmLogin.getContentPane().setLayout(groupLayout);
-		 
-		btnExitt.setBackground(new Color(255, 255, 255));
-		btnExitt.setIcon(new ImageIcon(getClass().getResource("/gambar/Exit.png"))); // NOI18N
+
+		btnExitt.setBackground(UIManager.getColor("InternalFrame.inactiveBorderColor"));
+		btnExitt.setIcon(new ImageIcon(login.class.getResource("/gambar/Exit.png"))); // NOI18N
 		btnExitt.setContentAreaFilled(false);
-	    btnExitt.setFocusable(false);
-	    btnExitt.setOpaque(true);
-	    btnExitt.setRolloverIcon(new ImageIcon(getClass().getResource("/gambar/Exit (2).png"))); // NOI18N
-	    btnExitt.addMouseListener(new MouseAdapter() {
-	            public void mouseEntered(MouseEvent evt) {
-	                btnExitMouseEntered(evt);
-	            }
-	            
-				public void mouseExited(MouseEvent evt) {
-	                btnExitMouseExited(evt);
-	            }
-	        });
-	    btnExitt.addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent evt) {
-	                btnExitActionPerformed(evt);
-	            }
-	        });
+		btnExitt.setFocusable(false);
+		btnExitt.setOpaque(true);
+		btnExitt.setRolloverIcon(null); // NOI18N
+		btnExitt.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnExitMouseEntered(evt);
+			}
 
-	        
-	        
-	        btnminimize.setBackground(new Color(255, 255, 255));
-	        btnminimize.setIcon(new ImageIcon(getClass().getResource("/gambar/Minimize.png"))); // NOI18N
-	        btnminimize.setContentAreaFilled(false);
-	        btnminimize.setFocusable(false);
-	        btnminimize.setOpaque(true);
-	        btnminimize.setRolloverIcon(new ImageIcon(getClass().getResource("/gambar/Minimize (2).png")));
-	        btnminimize.addMouseListener(new MouseAdapter() {
-	            public void mouseEntered(MouseEvent evt) {
-	                btnMinimizeMouseEntered(evt);
-	            }
-	            public void mouseExited(MouseEvent evt) {
-	                btnMinimizeMouseExited(evt);
-	            }
-	        });
-	        btnminimize.addActionListener(new ActionListener() {
-	            public void actionPerformed(ActionEvent evt) {
-	                btnMinimizeActionPerformed(evt);
-	            }
-	        });
-	    
-	
+			public void mouseExited(MouseEvent evt) {
+				btnExitMouseExited(evt);
+			}
+		});
+		btnExitt.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				btnExitActionPerformed(evt);
+			}
+		});
+
+		btnminimize.setBackground(UIManager.getColor("InternalFrame.inactiveBorderColor"));
+		btnminimize.setIcon(new ImageIcon(login.class.getResource("/gambar/Minimize (2).png"))); // NOI18N
+		btnminimize.setContentAreaFilled(false);
+		btnminimize.setFocusable(false);
+		btnminimize.setOpaque(true);
+		btnminimize.setRolloverIcon(new ImageIcon(getClass().getResource("/gambar/Minimize (2).png")));
+		btnminimize.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnMinimizeMouseEntered(evt);
+			}
+
+			public void mouseExited(MouseEvent evt) {
+				btnMinimizeMouseExited(evt);
+			}
+		});
+		btnminimize.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				btnMinimizeActionPerformed(evt);
+			}
+		});
+
 	}
-	 private void btnExitMouseEntered(MouseEvent evt) {                                     
-	        btnExitt.setBackground(new Color(232,17,35));
-	    }                                    
 
-	    private void btnExitMouseExited(MouseEvent evt) {                                    
-	        btnExitt.setBackground(new Color(255,255,255));
-	    }                                   
+	private void btnExitMouseEntered(MouseEvent evt) {
+		btnExitt.setBackground(new Color(232, 17, 35));
+	}
 
-	    private void btnExitActionPerformed(ActionEvent evt) {                                        
-	        System.exit(0);
-	    }                                       
+	private void btnExitMouseExited(MouseEvent evt) {
+		btnExitt.setBackground(UIManager.getColor("InternalFrame.inactiveBorderColor"));
+	}
 
-	    private void btnMinimizeMouseEntered(MouseEvent evt) {                                         
-	        btnminimize.setBackground(new Color(229,229,229));
-	    }                                        
+	private void btnExitActionPerformed(ActionEvent evt) {
+		//System.exit(0);
+		frmLogin.setVisible(false);
+	}
 
-	    private void btnMinimizeMouseExited(MouseEvent evt) {                                        
-	        btnminimize.setBackground(new Color(255,255,255));
-	    }                                       
+	private void btnMinimizeMouseEntered(MouseEvent evt) {
+		btnminimize.setBackground(new Color(229, 229, 229));
+	}
 
-	    private void btnMinimizeActionPerformed(ActionEvent evt) {                                            
-	        frmLogin.setState(Frame.ICONIFIED);
-	    }                                           
+	private void btnMinimizeMouseExited(MouseEvent evt) {
+		btnminimize.setBackground(UIManager.getColor("InternalFrame.inactiveBorderColor"));
+	}
 
-	    private void pnlHeaderMousePressed(MouseEvent evt) {                                       
-	        xMouse = evt.getX();
-	        yMouse = evt.getY();
-	    }                                      
+	private void btnMinimizeActionPerformed(ActionEvent evt) {
+		frmLogin.setState(Frame.ICONIFIED);
+	}
 
-	    private void pnlHeaderMouseDragged(MouseEvent evt) {                                       
-	        if(maximized){
-	            int x = evt.getXOnScreen();
-	            int y = evt.getYOnScreen();
-	           frmLogin.setLocation(x - xMouse, y - yMouse);
-	        }
-	    }  
+	private void pnlHeaderMousePressed(MouseEvent evt) {
+		xMouse = evt.getX();
+		yMouse = evt.getY();
+	}
+
+	private void pnlHeaderMouseDragged(MouseEvent evt) {
+		if (maximized) {
+			int x = evt.getXOnScreen();
+			int y = evt.getYOnScreen();
+			frmLogin.setLocation(x - xMouse, y - yMouse);
+		}
+	}
 
 	public void Show() {
-		frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLogin.setVisible(true);
 
 	}
