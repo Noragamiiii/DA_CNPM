@@ -1,52 +1,38 @@
 package CNPM;
 
+import java.awt.Color;
+import java.awt.Cursor;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Frame;
+import java.awt.SystemColor;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-
-import javax.swing.ImageIcon;
-import javax.swing.border.BevelBorder;
-import java.awt.Font;
-import java.awt.Frame;
-import java.awt.GraphicsEnvironment;
-
-import javax.swing.JTextField;
 import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import javax.swing.border.LineBorder;
-import javax.swing.border.MatteBorder;
-import java.awt.SystemColor;
-import java.awt.Toolkit;
-import java.awt.BorderLayout;
-import javax.swing.border.EmptyBorder;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
-import javax.swing.JCheckBox;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
-import java.sql.Connection;
-
-import CNPM.Register;
-import CNPM.Connect_DB;
-import java.awt.Rectangle;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.UIManager;
-import java.awt.Cursor;
-import java.awt.Dimension;
-
+import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
+import javax.swing.border.MatteBorder;
 
 public class login {
 
@@ -57,13 +43,14 @@ public class login {
 	static boolean maximized = true;
 	int xMouse, yMouse;
 	Connection connect = null;
+	private String separate;
 
 	private JTextField txtUsername;
 	private JPasswordField passwordField;
 	private JLabel lblNewLabel, lblsignin, lblusername, lblmatkhau, lblnewacc;
 	private JCheckBox chckbxShowPassword;
 	private JPanel panel, pnlHeader;
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -76,9 +63,9 @@ public class login {
 			}
 		});
 	}
-	
 
 	public login() {
+
 		try {
 			connect = Connect_DB.getSQLServer();
 		} catch (ClassNotFoundException e1) {
@@ -86,16 +73,38 @@ public class login {
 		} catch (SQLException e1) {
 			e1.printStackTrace();
 		}
-		
-		
+
 		frmLogin = new JFrame();
 		frmLogin.setResizable(false);
 		frmLogin.setBounds(342, 192, 700, 350);// getContentPane().
 		frmLogin.setTitle("Đăng nhập");
 		frmLogin.getContentPane().setBackground(SystemColor.activeCaption);
 		frmLogin.setUndecorated(true);
-//		frmLogin.setLocationRelativeTo(null);
-		
+		initComponent();
+
+	}
+	public login(String sepa) {
+		this.separate = sepa;
+	}
+
+	public String getSepa() {
+		return separate;
+	}
+
+	public void setSepa(String separate) {
+		this.separate = separate;
+	}
+
+	private void initComponent() {
+		try {
+			for (LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (Exception e) {
+		}
 		panel = new JPanel();
 		panel.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
 
@@ -129,10 +138,25 @@ public class login {
 		btnlogin.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 		btnlogin.addActionListener(new ActionListener() {
+			@SuppressWarnings({ "unchecked", "rawtypes" })
 			public void actionPerformed(ActionEvent e) {
 				try {
 
-					String url = "select * from Admin where Username = ? and iPassword = ?";
+					 /*String Separate = (String)getSeparate();
+					
+					 if(Separate.equals("Admin")) {
+					 Separate = "Admin";
+					 }
+					 else {
+					 Separate = "Hodan";
+					 }*/
+					
+					/*String Separate = (new HomePage()).getSeparate();
+					login Login = new login(Separate);
+					Login.setSepa(Separate);
+					String sepa = Login.getSepa();*/
+
+					String url = "select * from Person where Username = ? and iPassword = ?";
 					PreparedStatement pre = connect.prepareStatement(url);
 
 					char getpass[];
@@ -140,17 +164,23 @@ public class login {
 					getpass = passwordField.getPassword();
 					password = String.valueOf(getpass);
 
+//					pre.setString(1, sepa);
 					pre.setString(1, txtUsername.getText());
 					pre.setString(2, password);
 
 					ResultSet rs = pre.executeQuery();
 					int count = 0;
+					ArrayList fullname = new ArrayList();
+					String Fullname;
+					
 					while (rs.next()) {
 						count = count + 1;
+						Fullname = rs.getString(2);
+						fullname.add(Fullname);
 					}
 					if (count == 1) {
-						// JOptionPane.showMessageDialog(null, "Username and Password are correct!");
-						Dashboard db = new Dashboard();
+						String fn = (String) fullname.get(0);
+						Dashboard db = new Dashboard(fn);
 						db.setVisible(true);
 						frmLogin.setVisible(false);
 						// goto Dashboard
@@ -173,6 +203,11 @@ public class login {
 		btnlogin.setFont(new Font("Segoe UI", Font.BOLD, 12));
 
 		btncancel = new JButton();
+		btncancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				frmLogin.setVisible(false);
+			}
+		});
 		btncancel.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 153)));
 		btncancel.setText("Hủy");
 		btncancel.setFocusable(false);
@@ -229,41 +264,32 @@ public class login {
 		btnminimize.setOpaque(true);
 		btnminimize.setFocusable(false);
 		btnminimize.setContentAreaFilled(false);
-		//btnminimize.setBackground(Color.WHITE);
-		
+		// btnminimize.setBackground(Color.WHITE);
+
 		GroupLayout gl_pnlHeader = new GroupLayout(pnlHeader);
-		gl_pnlHeader.setHorizontalGroup(
-			gl_pnlHeader.createParallelGroup(Alignment.TRAILING)
+		gl_pnlHeader.setHorizontalGroup(gl_pnlHeader.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_pnlHeader.createSequentialGroup().addContainerGap(580, Short.MAX_VALUE)
+						.addComponent(btnminimize, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED)
+						.addComponent(btnExitt, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap()));
+		gl_pnlHeader.setVerticalGroup(gl_pnlHeader.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_pnlHeader.createSequentialGroup()
-					.addContainerGap(580, Short.MAX_VALUE)
-					.addComponent(btnminimize, GroupLayout.PREFERRED_SIZE, 50, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnExitt, GroupLayout.PREFERRED_SIZE, 38, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
-		gl_pnlHeader.setVerticalGroup(
-			gl_pnlHeader.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_pnlHeader.createSequentialGroup()
-					.addGroup(gl_pnlHeader.createParallelGroup(Alignment.LEADING)
-						.addComponent(btnExitt, 0, 0, Short.MAX_VALUE)
-						.addComponent(btnminimize, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
-		);
+						.addGroup(gl_pnlHeader.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnExitt, 0, 0, Short.MAX_VALUE)
+								.addComponent(btnminimize, GroupLayout.PREFERRED_SIZE, 25, GroupLayout.PREFERRED_SIZE))
+						.addContainerGap()));
 		pnlHeader.setLayout(gl_pnlHeader);
 		GroupLayout groupLayout = new GroupLayout(frmLogin.getContentPane());
-		groupLayout.setHorizontalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+		groupLayout.setHorizontalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 				.addComponent(pnlHeader, GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
-				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
-		);
-		groupLayout.setVerticalGroup(
-			groupLayout.createParallelGroup(Alignment.LEADING)
+				.addComponent(panel, GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE));
+		groupLayout.setVerticalGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addComponent(pnlHeader, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
-					.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap())
-		);
+						.addComponent(pnlHeader, GroupLayout.PREFERRED_SIZE, 26, GroupLayout.PREFERRED_SIZE)
+						.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(panel, GroupLayout.PREFERRED_SIZE, 319, GroupLayout.PREFERRED_SIZE)
+						.addContainerGap()));
 
 		txtUsername = new JTextField();
 		txtUsername.setBorder(null);
@@ -361,7 +387,6 @@ public class login {
 				btnMinimizeActionPerformed(evt);
 			}
 		});
-
 	}
 
 	private void btnExitMouseEntered(MouseEvent evt) {
@@ -373,7 +398,7 @@ public class login {
 	}
 
 	private void btnExitActionPerformed(ActionEvent evt) {
-		//System.exit(0);
+		// System.exit(0);
 		frmLogin.setVisible(false);
 	}
 
@@ -403,7 +428,7 @@ public class login {
 	}
 
 	public void Show() {
-		//frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		// frmLogin.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmLogin.setVisible(true);
 
 	}

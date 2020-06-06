@@ -6,7 +6,7 @@ import java.util.List;
 public class Hodan {
 	
 	private List<Hodan> hodan = new ArrayList<Hodan>();
-	private String idHodan;
+	private int idHodan;
 	private String idVatnuoi;
 	private String Username;
 	private String Password;
@@ -15,17 +15,26 @@ public class Hodan {
 	private String Gender;
 	private String Phonenumber;
 	private String Address;
+	private String irole;
 	
 	
 	public List<Hodan>  gethodan(){
 		return this.hodan;
 	}
-	public String getIdHodan() {
+	public String getIrole() {
+		return irole;
+	}
+
+
+	public void setIrole(String Irole) {
+		this.irole = Irole;
+	}
+	public int getIdHodan() {
 		return idHodan;
 	}
 
 
-	public void setIdHodan(String idHodan) {
+	public void setIdHodan(int idHodan) {
 		this.idHodan = idHodan;
 	}
 
@@ -113,11 +122,10 @@ public class Hodan {
 	
 	 
 
-	public Hodan(String idHodan, String idVatnuoi, String username, String password, String fullname, String dob,
-			String gender, String phonenumber, String address) {
+	public Hodan(int idHodan, String username, String password, String fullname, String gender,
+			String phonenumber, String address, String dob) {
 		super();
 		this.idHodan = idHodan;
-		this.idVatnuoi = idVatnuoi;
 		Username = username;
 		Password = password;
 		Fullname = fullname;
@@ -127,9 +135,20 @@ public class Hodan {
 		Address = address;
 		
 	}
-	public void Add() {
+	public Hodan( String username, String password, String fullname, String gender,
+			String phonenumber, String address, String dob, String irole) {
+		super();
+		Username = username;
+		Password = password;
+		Fullname = fullname;
+		Dob = dob;
+		Gender = gender;
+		Phonenumber = phonenumber;
+		Address = address;
 		
 	}
+	
+	
 	@Override
 	public String toString() {
 	 return String.format("Hodan[idHodan = %s, idVatnuoi = %s, username = %s, password = %s, fullname = %s, dob = %s, "

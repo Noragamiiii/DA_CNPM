@@ -1,49 +1,58 @@
 package CNPM;
 
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import java.awt.Toolkit;
-import javax.swing.JPanel;
 import java.awt.Color;
 import java.awt.Cursor;
-
-import javax.swing.JLabel;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.SwingConstants;
+import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
-
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
+import java.awt.Menu;
+import java.awt.MenuBar;
+import java.awt.MenuItem;
+import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
-import javax.swing.ImageIcon;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.WindowConstants;
-import javax.swing.JTextPane;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.awt.SystemColor;
-import java.awt.Dimension;
+
+import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.WindowConstants;
+import javax.swing.JMenuBar;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 @SuppressWarnings("serial")
-public class HomePage extends JFrame {
+public class HomePage extends JFrame implements ActionListener {
 
 //	private JFrame frmHome;
 	private JPanel panel, pnlHeader;
 	private JButton btnExit, btnMinimize, btnMaximize;
 	private boolean maximized = true;
 	int xMouse, yMouse;
+	private JMenuBar menuBar_1;
+	private JMenu mnNewMenu_1;
+	private JMenuItem mntmNewMenuItem;
+	private JMenuItem mntmNewMenuItem_1;
+	private String separate;
 
-	/**
-	 * Launch the application.
-	 */
+	
+	
+	
 	public static void main(String args[]) {
 
 		try {
@@ -76,7 +85,7 @@ public class HomePage extends JFrame {
 		initialize();
 		
 	}
-
+	
 	private void initialize() {
 
 
@@ -96,18 +105,6 @@ public class HomePage extends JFrame {
 		lblHompage.setIcon(
 				new ImageIcon(HomePage.class.getResource("/gambar/imageonline-co-whitebackgroundremoved.png")));
 
-		JLabel lblLogin = new JLabel("Đăng nhập");
-		lblLogin.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				login Login = new login();
-				Login.Show();
-			}
-		});
-		lblLogin.setHorizontalAlignment(SwingConstants.CENTER);
-		lblLogin.setForeground(Color.BLUE);
-		lblLogin.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-
 		JLabel lblRegister = new JLabel("Đăng kí");
 		lblRegister.addMouseListener(new MouseAdapter() {
 			@Override
@@ -125,38 +122,6 @@ public class HomePage extends JFrame {
 		txtpntitle.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
 		txtpntitle.setFont(new Font("Segoe UI", Font.BOLD, 20));
 		txtpntitle.setText("HỆ THỐNG QUẢN LÍ TIÊM CHỦNG GIA SÚC GIA CẦM");
-		GroupLayout gl_panel = new GroupLayout(panel);
-		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap(772, Short.MAX_VALUE)
-					.addComponent(lblLogin, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addComponent(lblRegister, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
-					.addGap(60))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(246)
-					.addComponent(txtpntitle)
-					.addGap(252))
-				.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
-					.addGap(202)
-					.addComponent(lblHompage, GroupLayout.PREFERRED_SIZE, 696, Short.MAX_VALUE)
-					.addGap(102))
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(29)
-					.addGroup(gl_panel.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblRegister, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblLogin, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
-					.addGap(34)
-					.addComponent(txtpntitle, GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-					.addPreferredGap(ComponentPlacement.UNRELATED)
-					.addComponent(lblHompage, GroupLayout.PREFERRED_SIZE, 386, GroupLayout.PREFERRED_SIZE)
-					.addGap(45))
-		);
-		panel.setLayout(gl_panel);
 
 		 pnlHeader = new JPanel();
 		pnlHeader.addMouseListener(new MouseAdapter() {
@@ -270,6 +235,87 @@ public class HomePage extends JFrame {
 					.addComponent(panel, GroupLayout.DEFAULT_SIZE, 593, Short.MAX_VALUE)
 					.addGap(0))
 		);
+		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBorder(null);
+		panel_1.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
+		
+		menuBar_1 = new JMenuBar();
+		menuBar_1.setBorderPainted(false);
+		menuBar_1.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
+		menuBar_1.setBorder(null);
+		
+		mnNewMenu_1 = new JMenu("Đăng nhập");
+		mnNewMenu_1.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+		mnNewMenu_1.setForeground(Color.BLUE);
+		mnNewMenu_1.setBorder(null);
+		mnNewMenu_1.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
+		menuBar_1.add(mnNewMenu_1);
+		
+		mntmNewMenuItem = new JMenuItem("Admin");
+		mntmNewMenuItem.addActionListener(this);
+		
+		mntmNewMenuItem.setBorder(null);
+		mntmNewMenuItem.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
+		mntmNewMenuItem.setForeground(Color.BLUE);
+		
+		mnNewMenu_1.add(mntmNewMenuItem);
+		
+		mntmNewMenuItem_1 = new JMenuItem("Hộ dân");
+		mntmNewMenuItem_1.setBorder(null);
+		mntmNewMenuItem_1.setForeground(Color.BLUE);
+		mntmNewMenuItem_1.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
+		mntmNewMenuItem_1.addActionListener(this);
+		
+		mnNewMenu_1.add(mntmNewMenuItem_1);
+		GroupLayout gl_panel_1 = new GroupLayout(panel_1);
+		gl_panel_1.setHorizontalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addGap(18)
+					.addComponent(menuBar_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(19, Short.MAX_VALUE))
+		);
+		gl_panel_1.setVerticalGroup(
+			gl_panel_1.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_1.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(menuBar_1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(21, Short.MAX_VALUE))
+		);
+		panel_1.setLayout(gl_panel_1);
+		GroupLayout gl_panel = new GroupLayout(panel);
+		gl_panel.setHorizontalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(772)
+					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
+					.addGap(10)
+					.addComponent(lblRegister, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(246)
+					.addComponent(txtpntitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(202)
+					.addComponent(lblHompage, GroupLayout.PREFERRED_SIZE, 696, GroupLayout.PREFERRED_SIZE))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addGap(22)
+					.addGroup(gl_panel.createParallelGroup(Alignment.LEADING)
+						.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 52, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_panel.createSequentialGroup()
+							.addGap(6)
+							.addComponent(lblRegister, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)))
+					.addGap(13)
+					.addComponent(txtpntitle, GroupLayout.PREFERRED_SIZE, 36, GroupLayout.PREFERRED_SIZE)
+					.addGap(11)
+					.addComponent(lblHompage, GroupLayout.PREFERRED_SIZE, 386, GroupLayout.PREFERRED_SIZE))
+		);
+		panel.setLayout(gl_panel);
+		
+		
 		getContentPane().setLayout(groupLayout);
 	}
 
@@ -329,5 +375,32 @@ public class HomePage extends JFrame {
 			int y = evt.getYOnScreen();
 			this.setLocation(x - xMouse, y - yMouse);
 		}
+	}
+	
+	public HomePage(String sepa) {
+		this.separate = sepa;
+	}
+
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if(e.getSource() == mntmNewMenuItem ) {
+			login Login = new login();
+			(new HomePage()).setSeparate("Admin");
+			Login.Show();
+		}
+		
+		if(e.getSource() == mntmNewMenuItem_1) {
+			login Login = new login();
+			(new HomePage()).setSeparate("Hodan");
+			Login.Show();
+		}
+		
+	}
+	public  void setSeparate(String Separate) {
+		this.separate = Separate;
+	}
+	public String getSeparate() {
+		return this.separate;
 	}
 }

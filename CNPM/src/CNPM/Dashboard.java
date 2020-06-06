@@ -47,6 +47,11 @@ public class Dashboard extends JFrame {
 			pnlTimelineLayout, layout, gl_panel, pnlNewsLayout;
 	private JSeparator separator;
 
+	public Dashboard(String Fullname) {
+		initComponents();
+		fullname.setText(Fullname);
+		
+	}
 	public Dashboard() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Dashboard.class.getResource("/gambar/dashboard (2).png")));
 		getContentPane().setBackground(SystemColor.activeCaption);
@@ -66,6 +71,13 @@ public class Dashboard extends JFrame {
 		btnNews = new JButton();
 		lblNews = new JLabel();
 		jLabel17 = new JLabel();
+		jLabel17.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				HomePage home = new HomePage();
+				home.setVisible(true);
+			}
+		});
 		fullname = new JLabel();
 		fullname.setHorizontalAlignment(SwingConstants.CENTER);
 		fullname.setFont(new Font("Arial", Font.BOLD, 14));
@@ -75,6 +87,13 @@ public class Dashboard extends JFrame {
 		jPanel1 = new JPanel();
 		jPanel1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 102)));
 		jLabel6 = new JLabel();
+		jLabel6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				EditInfo infor = new EditInfo();
+				infor.setVisible(true);
+			}
+		});
 		jPanel2 = new JPanel();
 		jPanel2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 153)));
 		jLabel7 = new JLabel();
@@ -233,42 +252,50 @@ public class Dashboard extends JFrame {
 		lblfullname.setFont(new Font("Arial", Font.BOLD, 14));
 
 		pnlMenuLayout = new GroupLayout(pnlMenu);
-		pnlMenuLayout.setHorizontalGroup(pnlMenuLayout.createParallelGroup(Alignment.LEADING).addGroup(pnlMenuLayout
-				.createSequentialGroup().addGap(18).addComponent(lblfullname)
-				.addGroup(pnlMenuLayout.createParallelGroup(Alignment.TRAILING).addGroup(Alignment.LEADING,
-						pnlMenuLayout.createSequentialGroup().addPreferredGap(ComponentPlacement.RELATED)
-								.addGroup(pnlMenuLayout.createParallelGroup(Alignment.LEADING, false)
-										.addComponent(lblTimeline, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE)
-										.addComponent(btnTimeline, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE,
-												Short.MAX_VALUE))
-								.addGap(60)
-								.addGroup(pnlMenuLayout.createParallelGroup(Alignment.LEADING)
-										.addComponent(lblNews, GroupLayout.PREFERRED_SIZE, 105,
-												GroupLayout.PREFERRED_SIZE)
-										.addComponent(btnNews, GroupLayout.PREFERRED_SIZE, 105,
-												GroupLayout.PREFERRED_SIZE)))
-						.addGroup(pnlMenuLayout.createSequentialGroup().addGap(18)
-								.addComponent(fullname, GroupLayout.PREFERRED_SIZE, 252, GroupLayout.PREFERRED_SIZE)
-								.addPreferredGap(ComponentPlacement.RELATED, 538, Short.MAX_VALUE)
-								.addComponent(jLabel17).addGap(18)))));
-		pnlMenuLayout.setVerticalGroup(pnlMenuLayout.createParallelGroup(Alignment.LEADING)
+		pnlMenuLayout.setHorizontalGroup(
+			pnlMenuLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(pnlMenuLayout.createSequentialGroup()
-						.addGroup(pnlMenuLayout.createParallelGroup(Alignment.TRAILING)
-								.addGroup(pnlMenuLayout.createSequentialGroup().addGap(10).addComponent(jLabel17)
-										.addPreferredGap(ComponentPlacement.RELATED, 8, Short.MAX_VALUE))
-								.addGroup(Alignment.LEADING,
-										pnlMenuLayout.createSequentialGroup().addGap(12)
-												.addGroup(pnlMenuLayout.createParallelGroup(Alignment.TRAILING)
-														.addComponent(fullname, GroupLayout.PREFERRED_SIZE, 26,
-																GroupLayout.PREFERRED_SIZE)
-														.addComponent(lblfullname))))
-						.addGroup(pnlMenuLayout.createParallelGroup(Alignment.BASELINE).addComponent(btnTimeline)
-								.addComponent(btnNews, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGroup(pnlMenuLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(lblTimeline, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblNews, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE))));
+					.addGap(18)
+					.addComponent(lblfullname)
+					.addGroup(pnlMenuLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(pnlMenuLayout.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(pnlMenuLayout.createParallelGroup(Alignment.LEADING, false)
+								.addComponent(lblTimeline, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(btnTimeline, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+							.addGap(60)
+							.addGroup(pnlMenuLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(lblNews, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
+								.addComponent(btnNews, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(Alignment.TRAILING, pnlMenuLayout.createSequentialGroup()
+							.addGap(18)
+							.addComponent(fullname, GroupLayout.PREFERRED_SIZE, 252, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 538, Short.MAX_VALUE)
+							.addComponent(jLabel17)
+							.addGap(18))))
+		);
+		pnlMenuLayout.setVerticalGroup(
+			pnlMenuLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(pnlMenuLayout.createSequentialGroup()
+					.addGroup(pnlMenuLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(pnlMenuLayout.createSequentialGroup()
+							.addGap(10)
+							.addComponent(jLabel17))
+						.addGroup(pnlMenuLayout.createSequentialGroup()
+							.addGap(21)
+							.addComponent(lblfullname))
+						.addGroup(Alignment.TRAILING, pnlMenuLayout.createSequentialGroup()
+							.addContainerGap(12, Short.MAX_VALUE)
+							.addComponent(fullname, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)))
+					.addPreferredGap(ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
+					.addGroup(pnlMenuLayout.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnTimeline)
+						.addComponent(btnNews, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(pnlMenuLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(lblTimeline, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblNews, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE)))
+		);
 		pnlMenu.setLayout(pnlMenuLayout);
 
 		pnlBody.setLayout(new CardLayout());

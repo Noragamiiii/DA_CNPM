@@ -32,6 +32,7 @@ import java.awt.event.MouseMotionAdapter;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 
 import CNPM.Connect_DB;
@@ -123,17 +124,20 @@ public class Register {
 		personalinfo.add(lblGender);
 
 		rdbtnNam = new JRadioButton();
+		rdbtnNam.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
 		rdbtnNam.setText("Nam");
 		rdbtnNam.setBounds(173, 106, 60, 23);
 		personalinfo.add(rdbtnNam);
 		rdbtnNam.setSelected(true);
 
 		rdbtnN = new JRadioButton();
+		rdbtnN.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
 		rdbtnN.setText("Nữ");
 		rdbtnN.setBounds(245, 104, 68, 23);
 		personalinfo.add(rdbtnN);
 
 		rdbtnkhac = new JRadioButton();
+		rdbtnkhac.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
 		rdbtnkhac.setText("Khác");
 		rdbtnkhac.setBounds(314, 104, 68, 23);
 		personalinfo.add(rdbtnkhac);
@@ -270,19 +274,33 @@ public class Register {
 						&& pass != null && repass != null) {
 					if (pass.equals(repass)) {
 						try {
-							String sql = "insert into HoDan(Username, iPassword, Fullname, Gender, PhoneNumber, iAddress,  Dob) values ( ?, ?, ?, ?, ?, ?, ?)";
+							String sql = "insert into Person(Username, iPassword, Fullname, Gender, PhoneNumber, iAddress,  Dob, irole) values ( ?, ?, ?, ?, ?, ?, ?, ?)";
 							PreparedStatement pre = connect.prepareStatement(sql);
-							pre.setString(1, username);
-							pre.setString(2, pass);
-							pre.setString(3, fullname);
-							pre.setString(4, Gender);
-							pre.setString(5, phonenumber);
-							pre.setString(6, address);
-							pre.setString(7, Dob);
-							pre.execute();
+							
+							Hodan user;
+							ArrayList<Hodan> userlist = new ArrayList<Hodan>();
+							user = new Hodan(username, pass, fullname, Gender, phonenumber, address, Dob, "Ho dan");
+							userlist.add(user);
+								 pre.setString(1, userlist.get(0).getUsername());
+								 pre.setString(2, userlist.get(0).getPassword());
+								 pre.setString(3, userlist.get(0).getFullname());
+								 pre.setString(4, userlist.get(0).getGender());
+								 pre.setString(5, userlist.get(0).getPhonenumber());
+								 pre.setString(6, userlist.get(0).getAddress());
+								 pre.setString(7, userlist.get(0).getDob());
+								 pre.setString(8, userlist.get(0).getIrole());
+								 
+//							pre.setString(1, username);
+//							pre.setString(2, pass);
+//							pre.setString(3, fullname);
+//							pre.setString(4, Gender);
+//							pre.setString(5, phonenumber);
+//							pre.setString(6, address);
+//							pre.setString(7, Dob);
+//							pre.setString(8, "Ho Dan");
+							
+								 pre.execute();
 							JOptionPane.showMessageDialog(null, "Successfull Register!");
-							Dashboard db = new Dashboard();
-							db.setVisible(true);
 							pre.close();
 
 						} catch (Exception ex) {
