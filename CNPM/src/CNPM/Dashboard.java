@@ -1,33 +1,43 @@
 
 package CNPM;
-
+import java.awt.CardLayout;
 import java.awt.Color;
-
+import java.awt.Cursor;
+import java.awt.Dimension;
 import java.awt.EventQueue;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
+import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JFrame;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.GroupLayout;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.ScrollPaneConstants;
-import java.awt.Font;
-import javax.swing.JLabel;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JSeparator;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.WindowConstants;
 import javax.swing.border.MatteBorder;
 
 @SuppressWarnings("serial")
@@ -37,29 +47,112 @@ public class Dashboard extends JFrame {
 
 	int xMouse;
 	int yMouse;
-
+	Connection connect = null;
 	private JButton btnExit, btnMaximize, btnMinimize, btnNews, btnTimeline;
 	private JLabel fullname, jLabel12, jLabel13, jLabel17, jLabel6, jLabel7, jLabel8, jLabel9, lblNewLabel, lblNews,
 			lblTimeline, lblfullname, label_1;
-	private JPanel jPanel1, jPanel2, jPanel3, jPanel4, pnlBody, pnlHeader, pnlMenu, pnlNews, pnlTimeline, panel;
+	private JPanel jPanel1, jPanel2, jPanel3, jPanel4, pnlBody, pnlHeader, pnlMenu, pnlNews, pnlTimeline, panel, jPanel4_1, jPanel4_1_1;
 	private JScrollPane jspTimeline, jspNews;
 	private GroupLayout pnlHeaderLayout, pnlMenuLayout, jPanel1Layout, jPanel2Layout, jPanel3Layout, jPanel4Layout,
 			pnlTimelineLayout, layout, gl_panel, pnlNewsLayout;
+	
 	private JSeparator separator;
+	public String iRole;
+	Statement st;
+	PreparedStatement pre;
+	ResultSet rs;
+	public String getiRole() {
+		return iRole;
+	}
 
-	public Dashboard(String Fullname) {
+	public void setiRole(String iRole) {
+		this.iRole = iRole;
+	}
+
+	private String name;
+	
+	
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public Dashboard(String Fullname, String role) {
 		initComponents();
 		fullname.setText(Fullname);
-		
+		iRole = role;
 	}
+	
 	public Dashboard() {
+		try {
+			connect = Connect_DB.getSQLServer();
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Dashboard.class.getResource("/gambar/dashboard (2).png")));
 		getContentPane().setBackground(SystemColor.activeCaption);
 		initComponents();
+		// Role();
+		
 	}
+	public String getrole(String iRole) {
+		String Role = "" ;
+		if(iRole.equals("Admin")) {
+			Role += "Admin";
+		}
+		else {
+			Role+="Ho dan";
+		}
+		return Role;
+	}
+//	private login logi;
+//	
+//	public Dashboard(login Login) {
+//		this.logi = Login;
+//	}
+//	
+//	public void Role() {
+//		String x = logi.getSepa();
+//		if(x.equals("Ho dan")) 
+//		{
+//			jPanel4_1.setVisible(false);
+//			jPanel4_1_1.setVisible(false);
+//		}
+//	}
+	
+	/*public String getFullName(int flag) {
+		String fullName ="";
+		try {
+			connect = Connect_DB.getSQLServer();
+			String query ="";
+			if(flag == 1) {
+				query = " select FullName from dbo.Admin where Username='" + iRole + "'";
+			}
+			else if(flag == 0) {
+				query = " select FullName from dbo.Hodan where Username='" + iRole + "'";
+			}
+			 st = connect.createStatement();
+			 rs= st.executeQuery(query);
+			while(rs.next()) {
+				fullName = rs.getString("FullName");
+			}
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (SQLException e1) {
+			e1.printStackTrace();
+		}
+		return fullName;
+	}*/
 
 	private void initComponents() {
-
+		//String r = getRole(iRole);
+		
 		pnlHeader = new JPanel();
 		btnExit = new JButton();
 		btnMaximize = new JButton();
@@ -79,7 +172,6 @@ public class Dashboard extends JFrame {
 			}
 		});
 		fullname = new JLabel();
-		fullname.setHorizontalAlignment(SwingConstants.CENTER);
 		fullname.setFont(new Font("Arial", Font.BOLD, 14));
 		pnlBody = new JPanel();
 		jspTimeline = new JScrollPane();
@@ -248,7 +340,9 @@ public class Dashboard extends JFrame {
 		jLabel17.setText("Đăng xuất");
 		jLabel17.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-		lblfullname = new JLabel("TÊN HỘ DÂN: ");
+		lblfullname = new JLabel("");
+		lblfullname.setHorizontalAlignment(SwingConstants.CENTER);
+		lblfullname.setIcon(new ImageIcon(Dashboard.class.getResource("/gambar/icons8-customer-30.png")));
 		lblfullname.setFont(new Font("Arial", Font.BOLD, 14));
 
 		pnlMenuLayout = new GroupLayout(pnlMenu);
@@ -256,45 +350,46 @@ public class Dashboard extends JFrame {
 			pnlMenuLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(pnlMenuLayout.createSequentialGroup()
 					.addGap(18)
-					.addComponent(lblfullname)
 					.addGroup(pnlMenuLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(pnlMenuLayout.createSequentialGroup()
-							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGap(51)
 							.addGroup(pnlMenuLayout.createParallelGroup(Alignment.LEADING, false)
 								.addComponent(lblTimeline, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-								.addComponent(btnTimeline, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-							.addGap(60)
+								.addComponent(btnTimeline))
+							.addGap(125)
 							.addGroup(pnlMenuLayout.createParallelGroup(Alignment.LEADING)
 								.addComponent(lblNews, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnNews, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE)))
-						.addGroup(Alignment.TRAILING, pnlMenuLayout.createSequentialGroup()
-							.addGap(18)
-							.addComponent(fullname, GroupLayout.PREFERRED_SIZE, 252, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 538, Short.MAX_VALUE)
+								.addComponent(btnNews, GroupLayout.PREFERRED_SIZE, 105, GroupLayout.PREFERRED_SIZE))
+							.addContainerGap())
+						.addGroup(pnlMenuLayout.createSequentialGroup()
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(lblfullname, GroupLayout.PREFERRED_SIZE, 32, GroupLayout.PREFERRED_SIZE)
+							.addGap(30)
+							.addComponent(fullname, GroupLayout.PREFERRED_SIZE, 278, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 561, Short.MAX_VALUE)
 							.addComponent(jLabel17)
 							.addGap(18))))
 		);
 		pnlMenuLayout.setVerticalGroup(
 			pnlMenuLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(pnlMenuLayout.createSequentialGroup()
-					.addGroup(pnlMenuLayout.createParallelGroup(Alignment.LEADING)
-						.addGroup(pnlMenuLayout.createSequentialGroup()
-							.addGap(10)
-							.addComponent(jLabel17))
-						.addGroup(pnlMenuLayout.createSequentialGroup()
-							.addGap(21)
-							.addComponent(lblfullname))
-						.addGroup(Alignment.TRAILING, pnlMenuLayout.createSequentialGroup()
-							.addContainerGap(12, Short.MAX_VALUE)
-							.addComponent(fullname, GroupLayout.PREFERRED_SIZE, 34, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)))
-					.addPreferredGap(ComponentPlacement.RELATED, 55, Short.MAX_VALUE)
-					.addGroup(pnlMenuLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnTimeline)
-						.addComponent(btnNews, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap()
 					.addGroup(pnlMenuLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblTimeline, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblNews, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE)))
+						.addGroup(pnlMenuLayout.createSequentialGroup()
+							.addGap(8)
+							.addGroup(pnlMenuLayout.createParallelGroup(Alignment.TRAILING)
+								.addComponent(jLabel17)
+								.addGroup(pnlMenuLayout.createSequentialGroup()
+									.addGroup(pnlMenuLayout.createParallelGroup(Alignment.TRAILING)
+										.addComponent(lblfullname, GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE)
+										.addComponent(fullname, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+									.addPreferredGap(ComponentPlacement.RELATED)))
+							.addGap(48)
+							.addComponent(btnTimeline)
+							.addComponent(lblTimeline, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE))
+						.addGroup(pnlMenuLayout.createSequentialGroup()
+							.addComponent(btnNews, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblNews, GroupLayout.PREFERRED_SIZE, 8, GroupLayout.PREFERRED_SIZE))))
 		);
 		pnlMenu.setLayout(pnlMenuLayout);
 
@@ -411,30 +506,114 @@ public class Dashboard extends JFrame {
 						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		jPanel4.setLayout(jPanel4Layout);
+		
+		 jPanel4_1 = new JPanel();
+		jPanel4_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 255)));
+		jPanel4_1.setBackground(new Color(212, 233, 238));
+		
+		JLabel lblCpNhtVaccine = new JLabel();
+		lblCpNhtVaccine.setText("Cập nhật Vaccine");
+		lblCpNhtVaccine.setOpaque(true);
+		lblCpNhtVaccine.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCpNhtVaccine.setForeground(Color.BLACK);
+		lblCpNhtVaccine.setFont(new Font("Segoe UI", Font.BOLD, 14));
+		lblCpNhtVaccine.setBackground(new Color(186, 207, 250));
+		
+		JLabel lblNewLabel_1 = new JLabel();
+		lblNewLabel_1.setIcon(new ImageIcon(Dashboard.class.getResource("/gambar/vaccine (2).png")));
+		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
+		GroupLayout gl_jPanel4_1 = new GroupLayout(jPanel4_1);
+		gl_jPanel4_1.setHorizontalGroup(
+			gl_jPanel4_1.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 252, Short.MAX_VALUE)
+				.addComponent(lblCpNhtVaccine, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+				.addGroup(gl_jPanel4_1.createSequentialGroup()
+					.addGap(19)
+					.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+					.addGap(24))
+		);
+		gl_jPanel4_1.setVerticalGroup(
+			gl_jPanel4_1.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 238, Short.MAX_VALUE)
+				.addGroup(gl_jPanel4_1.createSequentialGroup()
+					.addComponent(lblCpNhtVaccine, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		jPanel4_1.setLayout(gl_jPanel4_1);
+		
+		 jPanel4_1_1 = new JPanel();
+		jPanel4_1_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 255)));
+		jPanel4_1_1.setBackground(new Color(212, 233, 238));
+		
+		JLabel lblCpNhtVaccine_1 = new JLabel();
+		lblCpNhtVaccine_1.setText("Cập nhật bảng tin");
+		lblCpNhtVaccine_1.setOpaque(true);
+		lblCpNhtVaccine_1.setHorizontalAlignment(SwingConstants.CENTER);
+		lblCpNhtVaccine_1.setForeground(Color.BLACK);
+		lblCpNhtVaccine_1.setFont(new Font("Segoe UI", Font.BOLD, 14));
+		lblCpNhtVaccine_1.setBackground(new Color(186, 207, 250));
+		
+		JLabel lblNewLabel_1_1 = new JLabel();
+		lblNewLabel_1_1.setIcon(new ImageIcon(Dashboard.class.getResource("/gambar/news.png")));
+		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.CENTER);
+		GroupLayout gl_jPanel4_1_1 = new GroupLayout(jPanel4_1_1);
+		gl_jPanel4_1_1.setHorizontalGroup(
+			gl_jPanel4_1_1.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 252, Short.MAX_VALUE)
+				.addGap(0, 252, Short.MAX_VALUE)
+				.addComponent(lblCpNhtVaccine_1, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
+				.addGroup(gl_jPanel4_1_1.createSequentialGroup()
+					.addGap(19)
+					.addComponent(lblNewLabel_1_1, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
+					.addGap(24))
+		);
+		gl_jPanel4_1_1.setVerticalGroup(
+			gl_jPanel4_1_1.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 238, Short.MAX_VALUE)
+				.addGap(0, 238, Short.MAX_VALUE)
+				.addGroup(gl_jPanel4_1_1.createSequentialGroup()
+					.addComponent(lblCpNhtVaccine_1, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(lblNewLabel_1_1, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
+		jPanel4_1_1.setLayout(gl_jPanel4_1_1);
 
 		pnlTimelineLayout = new GroupLayout(pnlTimeline);
-		pnlTimelineLayout.setHorizontalGroup(pnlTimelineLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(pnlTimelineLayout.createSequentialGroup().addGap(70)
-						.addGroup(pnlTimelineLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(50)
-						.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addGap(52).addComponent(jPanel3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addGap(61)));
-		pnlTimelineLayout.setVerticalGroup(pnlTimelineLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(pnlTimelineLayout.createSequentialGroup().addGap(34).addGroup(pnlTimelineLayout
-						.createParallelGroup(Alignment.TRAILING, false)
+		pnlTimelineLayout.setHorizontalGroup(
+			pnlTimelineLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(pnlTimelineLayout.createSequentialGroup()
+					.addGap(70)
+					.addGroup(pnlTimelineLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(50)
+					.addGroup(pnlTimelineLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jPanel4_1, GroupLayout.PREFERRED_SIZE, 252, GroupLayout.PREFERRED_SIZE))
+					.addGap(52)
+					.addGroup(pnlTimelineLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(jPanel4_1_1, GroupLayout.PREFERRED_SIZE, 252, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jPanel3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGap(61))
+		);
+		pnlTimelineLayout.setVerticalGroup(
+			pnlTimelineLayout.createParallelGroup(Alignment.LEADING)
+				.addGroup(pnlTimelineLayout.createSequentialGroup()
+					.addGap(34)
+					.addGroup(pnlTimelineLayout.createParallelGroup(Alignment.TRAILING, false)
 						.addComponent(jPanel3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 						.addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-						.addGap(27).addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE,
-								GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(50, Short.MAX_VALUE)));
+					.addGap(27)
+					.addGroup(pnlTimelineLayout.createParallelGroup(Alignment.LEADING)
+						.addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jPanel4_1, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
+						.addComponent(jPanel4_1_1, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(50, Short.MAX_VALUE))
+		);
 		pnlTimeline.setLayout(pnlTimelineLayout);
 
 		jspTimeline.setViewportView(pnlTimeline);
@@ -487,11 +666,15 @@ public class Dashboard extends JFrame {
 					.addComponent(pnlMenu, GroupLayout.PREFERRED_SIZE, 128, GroupLayout.PREFERRED_SIZE)
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(pnlBody, GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE))
+				
 		);
 		getContentPane().setLayout(layout);
 
 		setSize(new Dimension(1000, 600));
 		setLocationRelativeTo(null);
+		
+
+		
 	}
 
 	private void btnExitMouseEntered(MouseEvent evt) {

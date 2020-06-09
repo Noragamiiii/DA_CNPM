@@ -1,6 +1,7 @@
 package CNPM;
 
 import java.awt.Color;
+
 import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -33,6 +34,7 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.border.MatteBorder;
+import CNPM.Dashboard;
 
 public class login {
 
@@ -83,6 +85,7 @@ public class login {
 		initComponent();
 
 	}
+
 	public login(String sepa) {
 		this.separate = sepa;
 	}
@@ -142,20 +145,6 @@ public class login {
 			public void actionPerformed(ActionEvent e) {
 				try {
 
-					 /*String Separate = (String)getSeparate();
-					
-					 if(Separate.equals("Admin")) {
-					 Separate = "Admin";
-					 }
-					 else {
-					 Separate = "Hodan";
-					 }*/
-					
-					/*String Separate = (new HomePage()).getSeparate();
-					login Login = new login(Separate);
-					Login.setSepa(Separate);
-					String sepa = Login.getSepa();*/
-
 					String url = "select * from Person where Username = ? and iPassword = ?";
 					PreparedStatement pre = connect.prepareStatement(url);
 
@@ -164,26 +153,35 @@ public class login {
 					getpass = passwordField.getPassword();
 					password = String.valueOf(getpass);
 
-//					pre.setString(1, sepa);
 					pre.setString(1, txtUsername.getText());
 					pre.setString(2, password);
 
 					ResultSet rs = pre.executeQuery();
 					int count = 0;
 					ArrayList fullname = new ArrayList();
+					ArrayList irole = new ArrayList();
 					String Fullname;
-					
+					String role;
+
 					while (rs.next()) {
 						count = count + 1;
-						Fullname = rs.getString(2);
+						Fullname = rs.getString(4);
 						fullname.add(Fullname);
+						role = rs.getString(9);
+						irole.add(role);
 					}
 					if (count == 1) {
 						String fn = (String) fullname.get(0);
-						Dashboard db = new Dashboard(fn);
+						String r = (String) irole.get(0);
+						
+						login rol = new login(); rol.setSepa(r);
+						
+						Dashboard db = new Dashboard(fn, r);
+						db.setiRole(r);
+						
 						db.setVisible(true);
 						frmLogin.setVisible(false);
-						// goto Dashboard
+
 					}
 
 					else {
@@ -264,7 +262,6 @@ public class login {
 		btnminimize.setOpaque(true);
 		btnminimize.setFocusable(false);
 		btnminimize.setContentAreaFilled(false);
-		// btnminimize.setBackground(Color.WHITE);
 
 		GroupLayout gl_pnlHeader = new GroupLayout(pnlHeader);
 		gl_pnlHeader.setHorizontalGroup(gl_pnlHeader.createParallelGroup(Alignment.TRAILING)

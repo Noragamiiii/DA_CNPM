@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
+import javax.swing.ButtonModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
@@ -103,8 +104,9 @@ public class EditInfo extends JFrame {
 		initComponent();
 
 	}
-//	 	ViewSelectedRowJFrame viewSelectedRow = new ViewSelectedRowJFrame();
-//	    SelectedRowsJFrameForm selectedRowsJFrameForm = new SelectedRowsJFrameForm();
+
+	// ViewSelectedRowJFrame viewSelectedRow = new ViewSelectedRowJFrame();
+	// SelectedRowsJFrameForm selectedRowsJFrameForm = new SelectedRowsJFrameForm();
 	private void initComponent() {
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setTitle("Edit Pesonal Information");
@@ -296,7 +298,6 @@ public class EditInfo extends JFrame {
 				String pass = "";
 				getpass = passwordField.getPassword();
 				pass = String.valueOf(getpass);
-
 			}
 		});
 		btnUpdate.setText("Cập nhật");
@@ -318,9 +319,7 @@ public class EditInfo extends JFrame {
 				String pass = "";
 				getpass = passwordField.getPassword();
 				pass = String.valueOf(getpass);
-				
-
-				
+				String role = "Ho dan";
 
 				if (txtFullname.getText() != null && groupGender.getSelection() != null && txtDob != null
 						&& txtSdt.getText() != null && txtAddress.getText() != null && txtUsername.getText() != null
@@ -331,41 +330,21 @@ public class EditInfo extends JFrame {
 						pre = connect.prepareStatement(sql);
 						Hodan user;
 						ArrayList<Hodan> userlist = new ArrayList<Hodan>();
-						user = new Hodan(username, pass, fullname, Gender, phonenumber, address, Dob, "Ho dan");
+						user = new Hodan(username, pass, fullname, Gender, phonenumber, address, Dob, role);
 						userlist.add(user);
-//						for(int i =1; i <= userlist.size(); i++) {
-							 pre.setString(1, userlist.get(0).getUsername());
-							 pre.setString(2, userlist.get(0).getPassword());
-							 pre.setString(3, userlist.get(0).getFullname());
-							 pre.setString(4, userlist.get(0).getGender());
-							 pre.setString(5, userlist.get(0).getPhonenumber());
-							 pre.setString(6, userlist.get(0).getAddress());
-							 pre.setString(7, userlist.get(0).getDob());
-							 pre.setString(8, userlist.get(0).getIrole());
-//						}
-//						for (Hodan record : userlist) {
-//							int index = 1;
-//							pre.setString(index++, record.getUsername());
-//							pre.setString(index++, record.getPassword());
-//							pre.setString(index++, record.getFullname());
-//							pre.setString(index++, record.getGender());
-//							pre.setString(index++, record.getPhonenumber());
-//							pre.setString(index++, record.getAddress());
-//							pre.setString(index++, record.getDob());
-//							pre.setString(index++, record.getIrole());
-//						}
-
-						// pre.setString(1, username);
-						// pre.setString(2, pass);
-						// pre.setString(3, fullname);
-						// pre.setString(4, Gender);
-						// pre.setString(5, phonenumber);
-						// pre.setString(6, address);
-						// pre.setString(7, Dob);
-						// pre.setString(8, "Ho dan");
-
+						
+						pre.setString(1, userlist.get(0).getUsername());
+						pre.setString(2, userlist.get(0).getPassword());
+						pre.setString(3, userlist.get(0).getFullname());
+						pre.setString(4, userlist.get(0).getGender());
+						pre.setString(5, userlist.get(0).getPhonenumber());
+						pre.setString(6, userlist.get(0).getAddress());
+						pre.setString(7, userlist.get(0).getDob());
+						pre.setString(8, userlist.get(0).getIrole());
+						
 						pre.execute();
 						JOptionPane.showMessageDialog(null, " Successfully!");
+						// Show_userlist();
 						pre.close();
 
 					} catch (Exception ex) {
@@ -379,43 +358,32 @@ public class EditInfo extends JFrame {
 		btnAdd.setText("Thêm");
 		btnAdd.setBorder(null);
 		btnAdd.setBackground(SystemColor.activeCaption);
-
+		/*
+		 * "idHoDan" INT NOT NULL, "Username" null, "iPassword" null, "Fullname" null,
+		 * "Gender" null, "PhoneNumber" null, "iAddress" null, "Dob" null,
+		 */
 		btnDelete = new JButton();
 		btnDelete.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
+				int row = table.getSelectedRow();
+				int datarow = (int) table.getModel().getValueAt(row, 0);
+				//fillData();
 				
-//				int selectedRowForNewJframe = jTable1.getSelectedRow();
-				 
-//		        check if the row is selected
-//		        if (selectedRowForNewJframe == -1) {
-		            //display error message
-//		            viewSelectedRow.jLabel1NoselectedRowMessage.setText("No Row Selected !!..");
-//		        } else {
-		            //Clear error message first
-//		            viewSelectedRow.jLabel1NoselectedRowMessage.setText(null);
-//		            System.out.println("selected row value  " + selectedRowForNewJframe);
-		 
-		            //Retrieving jtable selected row
-//		            String newName = model.getValueAt(selectedRowForNewJframe, 0).toString();
-//		            String newGender = model.getValueAt(selectedRowForNewJframe, 1).toString();
-//		            String newProgrammingLanguage = model.getValueAt(selectedRowForNewJframe, 2).toString();
-//		            String newsubject = model.getValueAt(selectedRowForNewJframe, 3).toString();
-		 
-//		            JLabel newImageJL = (JLabel) model.getValueAt(selectedRowForNewJframe, 4);
-//		            ImageIcon newImageIcon = (ImageIcon) newImageJL.getIcon();
-		 
-		            //Resize image to fit new Jlabel
-//		            Image newImage = newImageIcon.getImage().getScaledInstance(viewSelectedRow.jLabelImageNewJframe.getWidth(), viewSelectedRow.jLabelImageNewJframe.getHeight(), Image.SCALE_SMOOTH);
-		 
-		            //Displaying selected row on new jframe input fields
-//		            viewSelectedRow.jTextFieldNameNewJframe.setText(newName);
-//		            viewSelectedRow.jTextFieldGenderNewJframe.setText(newGender);
-//		            viewSelectedRow.jTextFieldPLanguageNewJframe.setText(newProgrammingLanguage);
-//		            viewSelectedRow.jTextFieldSubjectNewJframe.setText(newsubject);
-//		            viewSelectedRow.jLabelImageNewJframe.setIcon(new ImageIcon(newImage));
-		 
-//		        }
-				
+				try {
+					String sql1 = "Delete from Person where idHodan = " + datarow + "";
+					pre = connect.prepareStatement(sql1);
+					pre.execute();
+					
+					JOptionPane.showMessageDialog(null, "Delete sucessfully");
+					tablemodel.setRowCount(0);
+					Show_userlist();
+					pre.close();
+					
+				} catch (Exception ex) {
+					JOptionPane.showMessageDialog(null, ex);
+				}
+
 			}
 		});
 		btnDelete.setText("Xóa");
@@ -424,93 +392,127 @@ public class EditInfo extends JFrame {
 
 		btnXem = new JButton();
 		btnXem.addActionListener(new ActionListener() {
+			private int clicked;
+
 			public void actionPerformed(ActionEvent e) {
 				Show_userlist();
+				clicked++;
+				if (clicked > 1) {
+					tablemodel.setRowCount(0);
+					Show_userlist();
+				}
 			}
 		});
 		btnXem.setText("Xem");
 		btnXem.setBorder(null);
 		btnXem.setBackground(SystemColor.activeCaption);
+		
+		JButton btnHy = new JButton();
+		btnHy.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtFullname.setText("");
+				txtSdt.setText("");
+				txtAddress.setText("");
+				txtDob.setText("");
+				txtUsername.setText("");
+				passwordField.setText("");
+				rdbtnKhac.setSelected(false);
+				rdbtnNam.setSelected(false);
+				rdbtnNu.setSelected(false);
+				
+			}
+		});
+		btnHy.setText("Hủy");
+		btnHy.setBorder(null);
+		btnHy.setBackground(SystemColor.activeCaption);
 		GroupLayout gl_Panel_info = new GroupLayout(Panel_info);
-		gl_Panel_info.setHorizontalGroup(gl_Panel_info.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_Panel_info.createSequentialGroup().addGap(22)
-						.addGroup(gl_Panel_info.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblFullname, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblGender, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblDob, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblAddress, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblPhone, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblUsername, GroupLayout.PREFERRED_SIZE, 88,
-										GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE))
-						.addGap(31)
-						.addGroup(gl_Panel_info.createParallelGroup(Alignment.LEADING)
-								.addComponent(txtSdt, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtUsername, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtAddress, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtDob, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
-								.addGroup(gl_Panel_info.createParallelGroup(Alignment.LEADING, false)
-										.addGroup(gl_Panel_info.createSequentialGroup()
-												.addComponent(rdbtnNam, GroupLayout.PREFERRED_SIZE, 55,
-														GroupLayout.PREFERRED_SIZE)
-												.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE,
-														Short.MAX_VALUE)
-												.addComponent(rdbtnNu, GroupLayout.PREFERRED_SIZE, 60,
-														GroupLayout.PREFERRED_SIZE)
-												.addGap(18).addComponent(rdbtnKhac, GroupLayout.PREFERRED_SIZE, 60,
-														GroupLayout.PREFERRED_SIZE))
-										.addComponent(txtFullname, GroupLayout.PREFERRED_SIZE, 219,
-												GroupLayout.PREFERRED_SIZE))
-								.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 217,
-										GroupLayout.PREFERRED_SIZE))
-						.addContainerGap(71, Short.MAX_VALUE))
-				.addGroup(gl_Panel_info.createSequentialGroup().addGap(30)
-						.addComponent(btnXem, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE).addGap(18)
-						.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE).addGap(18)
-						.addComponent(btnUpdate, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE).addGap(18)
-						.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
-						.addGap(51)));
-		gl_Panel_info.setVerticalGroup(gl_Panel_info.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_Panel_info.createSequentialGroup().addGap(38)
-						.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblFullname, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtFullname, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblGender, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-								.addComponent(rdbtnKhac).addComponent(rdbtnNu).addComponent(rdbtnNam))
-						.addPreferredGap(ComponentPlacement.UNRELATED)
-						.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblDob, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtDob, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addGroup(gl_Panel_info.createParallelGroup(Alignment.LEADING)
-								.addComponent(lblAddress, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtAddress, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
-						.addGap(31)
-						.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblPhone, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-								.addComponent(txtSdt, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
-						.addGap(30)
-						.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
-								.addComponent(txtUsername, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
-								.addComponent(lblUsername, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
-						.addGap(31)
-						.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
-								.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-								.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 29,
-										GroupLayout.PREFERRED_SIZE))
-						.addGap(18)
-						.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
-								.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnUpdate, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-								.addComponent(btnXem, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
-						.addContainerGap(38, Short.MAX_VALUE)));
+		gl_Panel_info.setHorizontalGroup(
+			gl_Panel_info.createParallelGroup(Alignment.TRAILING)
+				.addGroup(gl_Panel_info.createSequentialGroup()
+					.addGap(22)
+					.addGroup(gl_Panel_info.createParallelGroup(Alignment.LEADING, false)
+						.addComponent(lblFullname, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblGender, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblDob, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblAddress, GroupLayout.PREFERRED_SIZE, 69, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblUsername, GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+						.addComponent(lblPassword, GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+						.addComponent(lblPhone, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGap(31)
+					.addGroup(gl_Panel_info.createParallelGroup(Alignment.LEADING)
+						.addComponent(txtSdt, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtUsername, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtAddress, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtDob, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE)
+						.addGroup(gl_Panel_info.createParallelGroup(Alignment.LEADING, false)
+							.addGroup(gl_Panel_info.createSequentialGroup()
+								.addComponent(rdbtnNam, GroupLayout.PREFERRED_SIZE, 55, GroupLayout.PREFERRED_SIZE)
+								.addPreferredGap(ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+								.addComponent(rdbtnNu, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE)
+								.addGap(18)
+								.addComponent(rdbtnKhac, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE))
+							.addComponent(txtFullname, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE))
+						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
+					.addContainerGap(71, Short.MAX_VALUE))
+				.addGroup(gl_Panel_info.createSequentialGroup()
+					.addGap(30)
+					.addComponent(btnXem, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addComponent(btnUpdate, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+					.addGap(18)
+					.addGroup(gl_Panel_info.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnHy, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE))
+					.addGap(51))
+		);
+		gl_Panel_info.setVerticalGroup(
+			gl_Panel_info.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_Panel_info.createSequentialGroup()
+					.addGap(38)
+					.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblFullname, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtFullname, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblGender, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(rdbtnKhac)
+						.addComponent(rdbtnNu)
+						.addComponent(rdbtnNam))
+					.addPreferredGap(ComponentPlacement.UNRELATED)
+					.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblDob, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtDob, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_Panel_info.createParallelGroup(Alignment.LEADING)
+						.addComponent(lblAddress, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtAddress, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
+					.addGap(31)
+					.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblPhone, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(txtSdt, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE))
+					.addGap(30)
+					.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
+						.addComponent(txtUsername, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblUsername, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
+					.addGap(31)
+					.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
+						.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+					.addGap(18)
+					.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
+						.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnUpdate, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnAdd, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+						.addComponent(btnXem, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
+					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(btnHy, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+		);
 		Panel_info.setLayout(gl_Panel_info);
 
 		JScrollPane scrollPane = new JScrollPane();
-		
 
 		GroupLayout gl_panel_Show = new GroupLayout(panel_Show);
 		gl_panel_Show.setHorizontalGroup(gl_panel_Show.createParallelGroup(Alignment.LEADING)
@@ -680,6 +682,73 @@ public class EditInfo extends JFrame {
 			row[7] = list.get(i).getDob();
 			tablemodel.addRow(row); // them du lieu hang
 		}
+	}
 
+	public JRadioButton getButton(String Text) {
+		// JRadioButton rd = new JRadioButton(Text);
+		switch (Text) {
+		case "Nữ":
+			return rdbtnNu;
+
+		case "Nam":
+			return rdbtnNam;
+		}
+		return rdbtnKhac;
+
+	}
+	public ArrayList<Hodan> FindHodan(int idHodan){
+		ArrayList<Hodan> userlist = new ArrayList<Hodan>();
+		Hodan user;
+		int row = table.getSelectedRow();
+		user = new Hodan((String)table.getValueAt(row,0), (String)table.getValueAt(row,1), (String)table.getValueAt(row,2), 
+				(String)table.getValueAt(row,3), (String)table.getValueAt(row,4), (String)table.getValueAt(row,5), 
+				(String)table.getValueAt(row,6), (String)table.getValueAt(row,7));
+		
+		userlist.add(user);
+		
+		return userlist;
+	}
+	public void fillData() {
+	
+		int row = table.getRowCount();
+		String datarow = table.getModel().getValueAt(row, 0).toString();
+		
+		try {
+			String sql = "select Username, iPassword, Fullname, Gender, PhoneNumber, iAddress, Dob from Person where idHodan = " + datarow + "" ;
+			//pre.setString(1, datarow);
+			pre = connect.prepareStatement(sql);
+			rs = pre.executeQuery();
+
+			while(rs.next()) {
+				String Username = rs.getString(2);
+				String Password = rs.getString(3);
+				String Fullname = rs.getString(4);
+				String Gender = rs.getString(5);
+				String Phone = rs.getString(6);
+				String Address = rs.getString(7);
+				String Dob = rs.getString(8);
+				
+				txtFullname.setText(Fullname);
+				passwordField.setText(Password);
+				txtUsername.setText(Username);
+				txtSdt.setText(Phone);
+				txtDob.setText(Dob);
+				txtAddress.setText(Address);
+				
+				if(Gender.equals("Name")) {
+					rdbtnNam.setSelected(true);
+				}
+				if(Gender.equals("Nữ")) {
+					rdbtnNu.setSelected(true);
+				}
+				else {
+					rdbtnKhac.setSelected(true);
+				}
+				//groupGender.setSelected((ButtonModel) getButton(Gender), true);
+			}
+			
+			}catch(Exception ex) {
+				JOptionPane.showMessageDialog(null, ex);
+			}
 	}
 }
