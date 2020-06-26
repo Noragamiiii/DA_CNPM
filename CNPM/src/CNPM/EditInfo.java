@@ -104,6 +104,24 @@ public class EditInfo extends JFrame {
 		initComponent();
 
 	}
+	public EditInfo(ArrayList<Hodan> user) {
+		//Hodan hodan;
+		for(Hodan hodan: user) {
+			txtFullname.setText(hodan.getFullname());
+			txtAddress.setText(hodan.getAddress());
+			txtDob.setText(hodan.getDob());
+			txtSdt.setText(hodan.getPhonenumber());
+			txtUsername.setText(hodan.getUsername());
+			passwordField.setText(hodan.getPassword());
+			String gender = hodan.getGender();
+			getButton(gender).setSelected(true);
+			
+			//groupGender.setSelected(m, b);
+			
+		}
+		
+	}
+	
 
 	// ViewSelectedRowJFrame viewSelectedRow = new ViewSelectedRowJFrame();
 	// SelectedRowsJFrameForm selectedRowsJFrameForm = new SelectedRowsJFrameForm();
@@ -293,11 +311,18 @@ public class EditInfo extends JFrame {
 				String Dob = txtDob.getText();
 				String phonenumber = txtSdt.getText();
 				String address = txtAddress.getText();
+				String role = "Ho dan";
 
 				char getpass[];
 				String pass = "";
 				getpass = passwordField.getPassword();
 				pass = String.valueOf(getpass);
+				Hodan user;
+				ArrayList<Hodan> hs ;
+				user = new Hodan(username, pass, fullname, Gender, phonenumber, address, Dob, role);
+				
+				
+				
 			}
 		});
 		btnUpdate.setText("Cập nhật");
@@ -319,7 +344,7 @@ public class EditInfo extends JFrame {
 				String pass = "";
 				getpass = passwordField.getPassword();
 				pass = String.valueOf(getpass);
-				String role = "Ho dan";
+				String role = "Ho dan"; 
 
 				if (txtFullname.getText() != null && groupGender.getSelection() != null && txtDob != null
 						&& txtSdt.getText() != null && txtAddress.getText() != null && txtUsername.getText() != null
@@ -344,7 +369,7 @@ public class EditInfo extends JFrame {
 						
 						pre.execute();
 						JOptionPane.showMessageDialog(null, " Successfully!");
-						// Show_userlist();
+						
 						pre.close();
 
 					} catch (Exception ex) {
@@ -522,6 +547,7 @@ public class EditInfo extends JFrame {
 				.addGroup(gl_panel_Show.createSequentialGroup().addContainerGap()
 						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(253, Short.MAX_VALUE)));
+		
 		tablemodel = new DefaultTableModel();
 		table = new JTable(tablemodel);
 		tablemodel.addColumn("ID");
@@ -714,8 +740,9 @@ public class EditInfo extends JFrame {
 		String datarow = table.getModel().getValueAt(row, 0).toString();
 		
 		try {
+			
 			String sql = "select Username, iPassword, Fullname, Gender, PhoneNumber, iAddress, Dob from Person where idHodan = " + datarow + "" ;
-			//pre.setString(1, datarow);
+			
 			pre = connect.prepareStatement(sql);
 			rs = pre.executeQuery();
 
@@ -744,7 +771,6 @@ public class EditInfo extends JFrame {
 				else {
 					rdbtnKhac.setSelected(true);
 				}
-				//groupGender.setSelected((ButtonModel) getButton(Gender), true);
 			}
 			
 			}catch(Exception ex) {

@@ -1,0 +1,7 @@
+use QuanLiTiemChung
+insert into News (Title, LinktoWeb, Datepost) values (N'Thanh Hóa: Nh?p thêm 320 con l?n b? m? t? Thái Lan', N'http://channuoivietnam.com/thanh-hoa-nhap-them-320-con-lon-bo-me-tu-thai-lan/', '2020-6-26');
+insert into News (Title, LinktoWeb, Datepost) values (N'Bình Thu?n: Chuy?n m?nh ch?n nuôi nh? l? sang trang tr?i, gia tr?i', N'http://channuoivietnam.com/binh-thuan-chuyen-manh-chan-nuoi-nho-le-sang-trang-trai-gia-trai-2/', '2020-6-26');
+insert into News (Title, LinktoWeb, Datepost) values (N'Chính sách ??c thù h? tr? tái ?àn l?n ? m?t s? ??a ph??ng', N'http://channuoivietnam.com/chinh-sach-dac-thu-ho-tro-tai-dan-lon-o-mot-so-dia-phuong/', '2020-6-26');
+insert into News (Title, LinktoWeb, Datepost) values (N'H?u Giang cho phép doanh nghi?p bán th?t heo bình ?n th?p h?n giá th? tr??ng', N'http://channuoivietnam.com/hau-giang-cho-phep-doanh-nghiep-ban-thit-heo-binh-on-thap-hon-gia-thi-truong/', '2020-6-26');
+insert into News (Title, LinktoWeb, Datepost) values (N'B? tr??ng Nguy?n Xuân C??ng: Cu?i 2020 ?àn l?n ???c khôi ph?c b?ng lúc tr??c d?ch', N'http://channuoivietnam.com/bo-truong-nguyen-xuan-cuong-cuoi-2020-dan-lon-duoc-khoi-phuc-bang-luc-truoc-dich/', '2020-6-26');
+insert into News (Title, LinktoWeb, Datepost) values (N'Nh?p kh?u th?c ?n ch?n nuôi và nguyên li?u 5 tháng gi?m m?nh 12,02% ', N'http://channuoivietnam.com/nhap-khau-thuc-an-chan-nuoi-va-nguyen-lieu-5-thang-giam-manh-1202/ ', '2020-6-26');
