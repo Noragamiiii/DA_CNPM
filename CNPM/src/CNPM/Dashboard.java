@@ -16,6 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,6 +47,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import javax.swing.JEditorPane;
 
 @SuppressWarnings("serial")
 public class Dashboard extends JFrame {
@@ -58,10 +60,10 @@ public class Dashboard extends JFrame {
 	private JButton btnExit, btnMaximize, btnMinimize, btnNews, btnTimeline;
 	private JLabel fullname, jLabel12, jLabel13, jLabel17, jLabel6, jLabel7, jLabel8, jLabel9, lblNewLabel, lblNews,
 			lblTimeline, lblfullname, label_1;
-	private JPanel jPanel1, jPanel2, jPanel3, jPanel4, pnlBody, pnlHeader, pnlMenu, pnlNews, pnlTimeline, panel, jPanel4_1, jPanel4_1_1;
+	private JPanel Hodan_management, DangkiTiem, LichDaDangKy, jPanel4, pnlBody, pnlHeader, pnlMenu, pnlNews, LichTiem, panel, Update_Vaccine, UpdateNews;
 	private JScrollPane jspTimeline, jspNews;
-	private GroupLayout pnlHeaderLayout, pnlMenuLayout, jPanel1Layout, jPanel2Layout, jPanel3Layout, jPanel4Layout,
-			pnlTimelineLayout, layout, gl_panel, pnlNewsLayout;
+	private GroupLayout pnlHeaderLayout, pnlMenuLayout, gl_Hodan_management, gl_DangkiTiem, gl_LichDaDangKy, jPanel4Layout,
+			gl_LichTiem, layout, gl_panel, pnlNewsLayout;
 	public String iRole;
 	Statement sta;
 	PreparedStatement pre;
@@ -94,6 +96,11 @@ public class Dashboard extends JFrame {
 		initComponents();
 		fullname.setText(Fullname);
 		iRole = role;
+		if(iRole.equals("Ho dan")) {
+			UpdateNews.setEnabled(true);
+			Update_Vaccine.setEnabled(true);
+			Hodan_management.setEnabled(true);
+		}
 	}
 	
 	public Dashboard() {
@@ -108,62 +115,10 @@ public class Dashboard extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Dashboard.class.getResource("/gambar/dashboard (2).png")));
 		getContentPane().setBackground(SystemColor.activeCaption);
 		initComponents();
-		// Role();
 		
 	}
 	
-	public String getrole(String iRole) {
-		String Role = "" ;
-		if(iRole.equals("Admin")) {
-			Role += "Admin";
-		}
-		else {
-			Role+="Ho dan";
-		}
-		return Role;
-	}
-	
-//	private login logi;
-//	
-//	public Dashboard(login Login) {
-//		this.logi = Login;
-//	}
-//	
-//	public void Role() {
-//		String x = logi.getSepa();
-//		if(x.equals("Ho dan")) 
-//		{
-//			jPanel4_1.setVisible(false);
-//			jPanel4_1_1.setVisible(false);
-//		}
-//	}
-	
-	/*public String getFullName(int flag) {
-		String fullName ="";
-		try {
-			connect = Connect_DB.getSQLServer();
-			String query ="";
-			if(flag == 1) {
-				query = " select FullName from dbo.Admin where Username='" + iRole + "'";
-			}
-			else if(flag == 0) {
-				query = " select FullName from dbo.Hodan where Username='" + iRole + "'";
-			}
-			 st = connect.createStatement();
-			 rs= st.executeQuery(query);
-			while(rs.next()) {
-				fullName = rs.getString("FullName");
-			}
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-		return fullName;
-	}*/
-
 	private void initComponents() {
-		//String r = getRole(iRole);
 		
 		pnlHeader = new JPanel();
 		btnExit = new JButton();
@@ -188,9 +143,9 @@ public class Dashboard extends JFrame {
 		fullname.setFont(new Font("Arial", Font.BOLD, 14));
 		pnlBody = new JPanel();
 		jspTimeline = new JScrollPane();
-		pnlTimeline = new JPanel();
-		jPanel1 = new JPanel();
-		jPanel1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 102)));
+		LichTiem = new JPanel();
+		Hodan_management = new JPanel();
+		Hodan_management.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 102)));
 		jLabel6 = new JLabel();
 		jLabel6.addMouseListener(new MouseAdapter() {
 			@Override
@@ -199,11 +154,11 @@ public class Dashboard extends JFrame {
 				infor.setVisible(true);
 			}
 		});
-		jPanel2 = new JPanel();
-		jPanel2.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 153)));
+		DangkiTiem = new JPanel();
+		DangkiTiem.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 153)));
 		jLabel7 = new JLabel();
-		jPanel3 = new JPanel();
-		jPanel3.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 204)));
+		LichDaDangKy = new JPanel();
+		LichDaDangKy.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 204)));
 		jLabel8 = new JLabel();
 		jLabel13 = new JLabel();
 		jPanel4 = new JPanel();
@@ -284,7 +239,7 @@ public class Dashboard extends JFrame {
 				btnMinimizeMouseEntered(evt);
 			}
 
-	public void mouseExited(MouseEvent evt) {
+			public void mouseExited(MouseEvent evt) {
 				btnMinimizeMouseExited(evt);
 			}
 		});
@@ -412,37 +367,37 @@ public class Dashboard extends JFrame {
 		jspTimeline.setBorder(null);
 		jspTimeline.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_ALWAYS);
 
-		pnlTimeline.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
+		LichTiem.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
 
-		jPanel1.setBackground(new Color(157, 182, 212));
-		jPanel1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		Hodan_management.setBackground(new Color(157, 182, 212));
+		Hodan_management.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 		jLabel6.setBackground(new Color(92, 118, 169));
 		jLabel6.setFont(new Font("Segoe UI", Font.BOLD, 14));
 		jLabel6.setForeground(new Color(0, 0, 0));
 		jLabel6.setHorizontalAlignment(SwingConstants.CENTER);
-		jLabel6.setText("Thông tin cá nhân");
+		jLabel6.setText("Quản lý hộ dân");
 		jLabel6.setOpaque(true);
 		jLabel12 = new JLabel();
 
 		jLabel12.setHorizontalAlignment(SwingConstants.CENTER);
 		jLabel12.setIcon(new ImageIcon(Dashboard.class.getResource("/gambar/hr.png")));
 
-		jPanel1Layout = new GroupLayout(jPanel1);
-		jPanel1Layout.setHorizontalGroup(jPanel1Layout.createParallelGroup(Alignment.TRAILING)
+		gl_Hodan_management = new GroupLayout(Hodan_management);
+		gl_Hodan_management.setHorizontalGroup(gl_Hodan_management.createParallelGroup(Alignment.TRAILING)
 				.addComponent(jLabel6, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-				.addGroup(jPanel1Layout.createSequentialGroup().addGap(10).addComponent(jLabel12,
+				.addGroup(gl_Hodan_management.createSequentialGroup().addGap(10).addComponent(jLabel12,
 						GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)));
-		jPanel1Layout.setVerticalGroup(jPanel1Layout.createParallelGroup(Alignment.LEADING)
-				.addGroup(jPanel1Layout.createSequentialGroup()
+		gl_Hodan_management.setVerticalGroup(gl_Hodan_management.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_Hodan_management.createSequentialGroup()
 						.addComponent(jLabel6, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(jLabel12, GroupLayout.PREFERRED_SIZE, 193, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		jPanel1.setLayout(jPanel1Layout);
+		Hodan_management.setLayout(gl_Hodan_management);
 
-		jPanel2.setBackground(new Color(169, 196, 217));
-		jPanel2.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		DangkiTiem.setBackground(new Color(169, 196, 217));
+		DangkiTiem.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 		jLabel7.setBackground(new Color(116, 143, 196));
 		jLabel7.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -455,22 +410,22 @@ public class Dashboard extends JFrame {
 		label_1.setIcon(new ImageIcon(Dashboard.class.getResource("/gambar/vaccine (1).png")));
 		label_1.setHorizontalAlignment(SwingConstants.CENTER);
 
-		jPanel2Layout = new GroupLayout(jPanel2);
-		jPanel2Layout.setHorizontalGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
+		gl_DangkiTiem = new GroupLayout(DangkiTiem);
+		gl_DangkiTiem.setHorizontalGroup(gl_DangkiTiem.createParallelGroup(Alignment.LEADING)
 				.addComponent(jLabel7, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE).addGroup(Alignment.TRAILING,
-						jPanel2Layout.createSequentialGroup().addContainerGap(34, Short.MAX_VALUE)
+						gl_DangkiTiem.createSequentialGroup().addContainerGap(34, Short.MAX_VALUE)
 								.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 206, GroupLayout.PREFERRED_SIZE)
 								.addContainerGap()));
-		jPanel2Layout.setVerticalGroup(jPanel2Layout.createParallelGroup(Alignment.LEADING)
-				.addGroup(jPanel2Layout.createSequentialGroup()
+		gl_DangkiTiem.setVerticalGroup(gl_DangkiTiem.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_DangkiTiem.createSequentialGroup()
 						.addComponent(jLabel7, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.UNRELATED)
 						.addComponent(label_1, GroupLayout.PREFERRED_SIZE, 182, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(17, Short.MAX_VALUE)));
-		jPanel2.setLayout(jPanel2Layout);
+		DangkiTiem.setLayout(gl_DangkiTiem);
 
-		jPanel3.setBackground(new Color(193, 215, 226));
-		jPanel3.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		LichDaDangKy.setBackground(new Color(193, 215, 226));
+		LichDaDangKy.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 		jLabel8.setBackground(new Color(139, 166, 221));
 		jLabel8.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -482,18 +437,18 @@ public class Dashboard extends JFrame {
 		jLabel13.setHorizontalAlignment(SwingConstants.CENTER);
 		jLabel13.setIcon(new ImageIcon(Dashboard.class.getResource("/gambar/calendar (1).png")));
 
-		jPanel3Layout = new GroupLayout(jPanel3);
-		jPanel3Layout.setHorizontalGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
+		gl_LichDaDangKy = new GroupLayout(LichDaDangKy);
+		gl_LichDaDangKy.setHorizontalGroup(gl_LichDaDangKy.createParallelGroup(Alignment.LEADING)
 				.addComponent(jLabel8, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-				.addGroup(jPanel3Layout.createSequentialGroup().addContainerGap()
+				.addGroup(gl_LichDaDangKy.createSequentialGroup().addContainerGap()
 						.addComponent(jLabel13, GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE).addContainerGap()));
-		jPanel3Layout.setVerticalGroup(jPanel3Layout.createParallelGroup(Alignment.LEADING)
-				.addGroup(jPanel3Layout.createSequentialGroup()
+		gl_LichDaDangKy.setVerticalGroup(gl_LichDaDangKy.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_LichDaDangKy.createSequentialGroup()
 						.addComponent(jLabel8, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.RELATED)
 						.addComponent(jLabel13, GroupLayout.PREFERRED_SIZE, 193, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		jPanel3.setLayout(jPanel3Layout);
+		LichDaDangKy.setLayout(gl_LichDaDangKy);
 
 		jPanel4.setBackground(new Color(212, 233, 238));
 		jPanel4.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -521,9 +476,9 @@ public class Dashboard extends JFrame {
 						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		jPanel4.setLayout(jPanel4Layout);
 		
-		 jPanel4_1 = new JPanel();
-		jPanel4_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 255)));
-		jPanel4_1.setBackground(new Color(212, 233, 238));
+		 Update_Vaccine = new JPanel();
+		Update_Vaccine.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 255)));
+		Update_Vaccine.setBackground(new Color(212, 233, 238));
 		
 		JLabel lblCpNhtVaccine = new JLabel();
 		lblCpNhtVaccine.setText("Cập nhật Vaccine");
@@ -536,30 +491,37 @@ public class Dashboard extends JFrame {
 		JLabel lblNewLabel_1 = new JLabel();
 		lblNewLabel_1.setIcon(new ImageIcon(Dashboard.class.getResource("/gambar/vaccine (2).png")));
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		GroupLayout gl_jPanel4_1 = new GroupLayout(jPanel4_1);
-		gl_jPanel4_1.setHorizontalGroup(
-			gl_jPanel4_1.createParallelGroup(Alignment.LEADING)
+		GroupLayout gl_Update_Vaccine = new GroupLayout(Update_Vaccine);
+		gl_Update_Vaccine.setHorizontalGroup(
+			gl_Update_Vaccine.createParallelGroup(Alignment.LEADING)
 				.addGap(0, 252, Short.MAX_VALUE)
 				.addComponent(lblCpNhtVaccine, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-				.addGroup(gl_jPanel4_1.createSequentialGroup()
+				.addGroup(gl_Update_Vaccine.createSequentialGroup()
 					.addGap(19)
 					.addComponent(lblNewLabel_1, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
 					.addGap(24))
 		);
-		gl_jPanel4_1.setVerticalGroup(
-			gl_jPanel4_1.createParallelGroup(Alignment.LEADING)
+		gl_Update_Vaccine.setVerticalGroup(
+			gl_Update_Vaccine.createParallelGroup(Alignment.LEADING)
 				.addGap(0, 238, Short.MAX_VALUE)
-				.addGroup(gl_jPanel4_1.createSequentialGroup()
+				.addGroup(gl_Update_Vaccine.createSequentialGroup()
 					.addComponent(lblCpNhtVaccine, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(lblNewLabel_1, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
-		jPanel4_1.setLayout(gl_jPanel4_1);
+		Update_Vaccine.setLayout(gl_Update_Vaccine);
 		
-		 jPanel4_1_1 = new JPanel();
-		jPanel4_1_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 255)));
-		jPanel4_1_1.setBackground(new Color(212, 233, 238));
+		 UpdateNews = new JPanel();
+		 UpdateNews.addMouseListener(new MouseAdapter() {
+		 	@Override
+		 	public void mouseClicked(MouseEvent e) {
+		 		AddNews news = new AddNews();
+		 		news.setVisible(true);
+		 	}
+		 });
+		UpdateNews.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 255)));
+		UpdateNews.setBackground(new Color(212, 233, 238));
 		
 		JLabel lblCpNhtVaccine_1 = new JLabel();
 		lblCpNhtVaccine_1.setText("Cập nhật bảng tin");
@@ -572,65 +534,65 @@ public class Dashboard extends JFrame {
 		JLabel lblNewLabel_1_1 = new JLabel();
 		lblNewLabel_1_1.setIcon(new ImageIcon(Dashboard.class.getResource("/gambar/news.png")));
 		lblNewLabel_1_1.setHorizontalAlignment(SwingConstants.CENTER);
-		GroupLayout gl_jPanel4_1_1 = new GroupLayout(jPanel4_1_1);
-		gl_jPanel4_1_1.setHorizontalGroup(
-			gl_jPanel4_1_1.createParallelGroup(Alignment.LEADING)
+		GroupLayout gl_UpdateNews = new GroupLayout(UpdateNews);
+		gl_UpdateNews.setHorizontalGroup(
+			gl_UpdateNews.createParallelGroup(Alignment.LEADING)
 				.addGap(0, 252, Short.MAX_VALUE)
 				.addGap(0, 252, Short.MAX_VALUE)
 				.addComponent(lblCpNhtVaccine_1, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-				.addGroup(gl_jPanel4_1_1.createSequentialGroup()
+				.addGroup(gl_UpdateNews.createSequentialGroup()
 					.addGap(19)
 					.addComponent(lblNewLabel_1_1, GroupLayout.DEFAULT_SIZE, 207, Short.MAX_VALUE)
 					.addGap(24))
 		);
-		gl_jPanel4_1_1.setVerticalGroup(
-			gl_jPanel4_1_1.createParallelGroup(Alignment.LEADING)
+		gl_UpdateNews.setVerticalGroup(
+			gl_UpdateNews.createParallelGroup(Alignment.LEADING)
 				.addGap(0, 238, Short.MAX_VALUE)
 				.addGap(0, 238, Short.MAX_VALUE)
-				.addGroup(gl_jPanel4_1_1.createSequentialGroup()
+				.addGroup(gl_UpdateNews.createSequentialGroup()
 					.addComponent(lblCpNhtVaccine_1, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
 					.addGap(18)
 					.addComponent(lblNewLabel_1_1, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 		);
-		jPanel4_1_1.setLayout(gl_jPanel4_1_1);
+		UpdateNews.setLayout(gl_UpdateNews);
 
-		pnlTimelineLayout = new GroupLayout(pnlTimeline);
-		pnlTimelineLayout.setHorizontalGroup(
-			pnlTimelineLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(pnlTimelineLayout.createSequentialGroup()
+		gl_LichTiem = new GroupLayout(LichTiem);
+		gl_LichTiem.setHorizontalGroup(
+			gl_LichTiem.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_LichTiem.createSequentialGroup()
 					.addGap(70)
-					.addGroup(pnlTimelineLayout.createParallelGroup(Alignment.TRAILING)
+					.addGroup(gl_LichTiem.createParallelGroup(Alignment.TRAILING)
 						.addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(jPanel1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(Hodan_management, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(50)
-					.addGroup(pnlTimelineLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(jPanel2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(jPanel4_1, GroupLayout.PREFERRED_SIZE, 252, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_LichTiem.createParallelGroup(Alignment.LEADING)
+						.addComponent(DangkiTiem, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(Update_Vaccine, GroupLayout.PREFERRED_SIZE, 252, GroupLayout.PREFERRED_SIZE))
 					.addGap(52)
-					.addGroup(pnlTimelineLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(jPanel4_1_1, GroupLayout.PREFERRED_SIZE, 252, GroupLayout.PREFERRED_SIZE)
-						.addComponent(jPanel3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_LichTiem.createParallelGroup(Alignment.LEADING)
+						.addComponent(UpdateNews, GroupLayout.PREFERRED_SIZE, 252, GroupLayout.PREFERRED_SIZE)
+						.addComponent(LichDaDangKy, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(61))
 		);
-		pnlTimelineLayout.setVerticalGroup(
-			pnlTimelineLayout.createParallelGroup(Alignment.LEADING)
-				.addGroup(pnlTimelineLayout.createSequentialGroup()
+		gl_LichTiem.setVerticalGroup(
+			gl_LichTiem.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_LichTiem.createSequentialGroup()
 					.addGap(34)
-					.addGroup(pnlTimelineLayout.createParallelGroup(Alignment.TRAILING, false)
-						.addComponent(jPanel3, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(jPanel1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-						.addComponent(jPanel2, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+					.addGroup(gl_LichTiem.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(LichDaDangKy, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(Hodan_management, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addComponent(DangkiTiem, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addGap(27)
-					.addGroup(pnlTimelineLayout.createParallelGroup(Alignment.LEADING)
+					.addGroup(gl_LichTiem.createParallelGroup(Alignment.LEADING)
 						.addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(jPanel4_1, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
-						.addComponent(jPanel4_1_1, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE))
+						.addComponent(Update_Vaccine, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
+						.addComponent(UpdateNews, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(50, Short.MAX_VALUE))
 		);
-		pnlTimeline.setLayout(pnlTimelineLayout);
+		LichTiem.setLayout(gl_LichTiem);
 
-		jspTimeline.setViewportView(pnlTimeline);
+		jspTimeline.setViewportView(LichTiem);
 
 		pnlBody.add(jspTimeline, "card2");
 
@@ -659,20 +621,30 @@ public class Dashboard extends JFrame {
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 788, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(200, Short.MAX_VALUE))
-		);
-		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE)
+					.addGap(69)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 739, GroupLayout.PREFERRED_SIZE)
 					.addContainerGap(190, Short.MAX_VALUE))
 		);
-		tablemodel = new DefaultTableModel();
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.TRAILING)
+				.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
+					.addGap(63)
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(636, Short.MAX_VALUE))
+		);
 		
+		panel.setLayout(gl_panel);
+		pnlNews.setLayout(pnlNewsLayout);
+		
+		tablemodel = new DefaultTableModel(); 
 		table = new JTable(tablemodel);
+		table.setBackground(UIManager.getColor("InternalFrame.borderHighlight"));
+		table.setFont(new Font("Segoe UI", Font.BOLD, 13));
+		
+		tablemodel.addColumn("Tin tức");
+		tablemodel.addColumn("Ngày đăng");
+		
+		scrollPane.setViewportView(table);
 		table.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -680,27 +652,7 @@ public class Dashboard extends JFrame {
 				
 			}
 		});
-		table.setFont(new Font("Segoe UI", Font.BOLD, 14));
-		table.setBackground(UIManager.getColor("InternalFrame.activeTitleGradient"));
-		tablemodel.addColumn("Tin tức");
-		tablemodel.addColumn("Ngày đăng");
-		table.getColumnModel().getColumn(0).setPreferredWidth(100);
 		
-		/*DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-		
-		TableColumn tc = table.getTableHeader().getColumnModel().getColumn(0);
-			renderer.setFont(new Font("Segoe UI", Font.BOLD, 16));
-			tc.setCellRenderer(renderer);
-			
-			TableColumn	 tcc = table.getTableHeader().getColumnModel().getColumn(1);
-			renderer.setFont(new Font("Segoe UI", Font.BOLD, 16));
-			tcc.setCellRenderer(renderer);*/
-		
-			//DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
-		
-			//TableColumnModel tc  =  table.getColorModel();
-			
-		scrollPane.setViewportView(table);
 		panel.setLayout(gl_panel);
 		pnlNews.setLayout(pnlNewsLayout);
 
@@ -850,35 +802,34 @@ public class Dashboard extends JFrame {
 	
 	}
 	public void getLink() {
+		
 		int i = table.getSelectedRow();
 		TableModel model = table.getModel();
 		String title = model.getValueAt(i, 0 ).toString();
 		
 		try {
-			String sql = "Select LinktoWeb from News where Title like '" + title +"'"; 
+			String sql = "Select * from News where Title like N'" + title +"'"; 
 			sta = connect.createStatement();
 			rs = sta.executeQuery(sql);
+			
 			ArrayList<String> link = new ArrayList<String>();
 			
 			while(rs.next()) {
 				String Link = rs.getString(3);
 				link.add(Link);
-			}
-			Newfr news = new Newfr(link.get(0));
-			news.setVisible();
 			
+			}
+			String l = link.get(0);
+			
+			Newfr news = new Newfr(l);
+			
+			news.setVisible();
 			
 		}catch(Exception ex) {
 			JOptionPane.showMessageDialog(null, ex);
 		}
 		
-		
 	}
-	
-
-	
-
-
 
 	public static void main(String args[]) {
 
