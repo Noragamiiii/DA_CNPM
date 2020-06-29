@@ -286,18 +286,21 @@ public class HomePage extends JFrame implements ActionListener {
 		panel_1.setLayout(gl_panel_1);
 		GroupLayout gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-			gl_panel.createParallelGroup(Alignment.LEADING)
+			gl_panel.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(772)
 					.addComponent(panel_1, GroupLayout.PREFERRED_SIZE, 114, GroupLayout.PREFERRED_SIZE)
 					.addGap(10)
-					.addComponent(lblRegister, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(246)
-					.addComponent(txtpntitle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblRegister, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+					.addGap(29))
 				.addGroup(gl_panel.createSequentialGroup()
 					.addGap(202)
-					.addComponent(lblHompage, GroupLayout.PREFERRED_SIZE, 696, GroupLayout.PREFERRED_SIZE))
+					.addComponent(lblHompage, GroupLayout.PREFERRED_SIZE, 696, Short.MAX_VALUE)
+					.addGap(102))
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap(246, Short.MAX_VALUE)
+					.addComponent(txtpntitle, GroupLayout.PREFERRED_SIZE, 533, GroupLayout.PREFERRED_SIZE)
+					.addGap(221))
 		);
 		gl_panel.setVerticalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)

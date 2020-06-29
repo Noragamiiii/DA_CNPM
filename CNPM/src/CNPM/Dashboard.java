@@ -10,6 +10,7 @@ import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
 import java.awt.SystemColor;
 import java.awt.Toolkit;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,9 +31,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSeparator;
+import javax.swing.JTable;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingConstants;
@@ -39,6 +42,10 @@ import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.MatteBorder;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableModel;
 
 @SuppressWarnings("serial")
 public class Dashboard extends JFrame {
@@ -55,12 +62,14 @@ public class Dashboard extends JFrame {
 	private JScrollPane jspTimeline, jspNews;
 	private GroupLayout pnlHeaderLayout, pnlMenuLayout, jPanel1Layout, jPanel2Layout, jPanel3Layout, jPanel4Layout,
 			pnlTimelineLayout, layout, gl_panel, pnlNewsLayout;
-	
-	private JSeparator separator;
 	public String iRole;
-	Statement st;
+	Statement sta;
 	PreparedStatement pre;
 	ResultSet rs;
+	DefaultTableModel tablemodel;
+	JTable tabel;
+	JScrollPane scr;
+	
 	public String getiRole() {
 		return iRole;
 	}
@@ -70,6 +79,7 @@ public class Dashboard extends JFrame {
 	}
 
 	private String name;
+	private JTable table;
 	
 	
 	public String getName() {
@@ -101,6 +111,7 @@ public class Dashboard extends JFrame {
 		// Role();
 		
 	}
+	
 	public String getrole(String iRole) {
 		String Role = "" ;
 		if(iRole.equals("Admin")) {
@@ -111,6 +122,7 @@ public class Dashboard extends JFrame {
 		}
 		return Role;
 	}
+	
 //	private login logi;
 //	
 //	public Dashboard(login Login) {
@@ -169,6 +181,7 @@ public class Dashboard extends JFrame {
 			public void mouseClicked(MouseEvent e) {
 				HomePage home = new HomePage();
 				home.setVisible(true);
+				setVisible(false);
 			}
 		});
 		fullname = new JLabel();
@@ -232,6 +245,7 @@ public class Dashboard extends JFrame {
 				btnExitMouseExited(evt);
 			}
 		});
+		
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				btnExitActionPerformed(evt);
@@ -636,16 +650,57 @@ public class Dashboard extends JFrame {
 		panel = new JPanel();
 		panel.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
 		jspNews.setViewportView(panel);
-
-		separator = new JSeparator();
+		
+		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
+		scrollPane.setBorder(null);
+		scrollPane.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
-				gl_panel.createParallelGroup(Alignment.LEADING).addGroup(gl_panel.createSequentialGroup().addGap(41)
-						.addComponent(separator, GroupLayout.DEFAULT_SIZE, 947, Short.MAX_VALUE).addContainerGap()));
-		gl_panel.setVerticalGroup(gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup().addGap(74)
-						.addComponent(separator, GroupLayout.PREFERRED_SIZE, 11, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(352, Short.MAX_VALUE)));
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 788, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(200, Short.MAX_VALUE))
+		);
+		gl_panel.setVerticalGroup(
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(190, Short.MAX_VALUE))
+		);
+		tablemodel = new DefaultTableModel();
+		
+		table = new JTable(tablemodel);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				getLink();
+				
+			}
+		});
+		table.setFont(new Font("Segoe UI", Font.BOLD, 14));
+		table.setBackground(UIManager.getColor("InternalFrame.activeTitleGradient"));
+		tablemodel.addColumn("Tin tức");
+		tablemodel.addColumn("Ngày đăng");
+		table.getColumnModel().getColumn(0).setPreferredWidth(100);
+		
+		/*DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+		
+		TableColumn tc = table.getTableHeader().getColumnModel().getColumn(0);
+			renderer.setFont(new Font("Segoe UI", Font.BOLD, 16));
+			tc.setCellRenderer(renderer);
+			
+			TableColumn	 tcc = table.getTableHeader().getColumnModel().getColumn(1);
+			renderer.setFont(new Font("Segoe UI", Font.BOLD, 16));
+			tcc.setCellRenderer(renderer);*/
+		
+			//DefaultTableCellRenderer renderer = new DefaultTableCellRenderer();
+		
+			//TableColumnModel tc  =  table.getColorModel();
+			
+		scrollPane.setViewportView(table);
 		panel.setLayout(gl_panel);
 		pnlNews.setLayout(pnlNewsLayout);
 
@@ -747,6 +802,8 @@ public class Dashboard extends JFrame {
 		pnlBody.add(pnlNews);
 		pnlBody.repaint();
 		pnlBody.revalidate();
+		tablemodel.setRowCount(0);
+		Show_userlist();
 	}
 
 	private void btnTimelineActionPerformed(ActionEvent evt) {
@@ -761,6 +818,67 @@ public class Dashboard extends JFrame {
 		pnlBody.repaint();
 		pnlBody.revalidate();
 	}
+	
+	public ArrayList<News> UserList() {
+		ArrayList<News> news = new ArrayList<News>();
+		try {
+			String sql = "select Title, Datepost from News";
+			sta = connect.createStatement();
+			rs = sta.executeQuery(sql);
+			News userlist;
+			while (rs.next()) {
+				userlist = new News(rs.getString("Title"), rs.getString("Datepost"));
+				news.add(userlist);
+			}
+
+		} catch (Exception ex) {
+			JOptionPane.showMessageDialog(null, ex);
+		}
+		return news;
+	}
+	
+	public void Show_userlist() {
+		ArrayList<News> list = UserList();
+		tablemodel = (DefaultTableModel)table.getModel();
+
+		Object[] row = new Object[2];
+		for (int i = 0; i < list.size(); i++) {
+			row[0] = list.get(i).getTitle();
+			row[1] = list.get(i).getDatepost();
+			tablemodel.addRow(row); 
+		}
+	
+	}
+	public void getLink() {
+		int i = table.getSelectedRow();
+		TableModel model = table.getModel();
+		String title = model.getValueAt(i, 0 ).toString();
+		
+		try {
+			String sql = "Select LinktoWeb from News where Title like '" + title +"'"; 
+			sta = connect.createStatement();
+			rs = sta.executeQuery(sql);
+			ArrayList<String> link = new ArrayList<String>();
+			
+			while(rs.next()) {
+				String Link = rs.getString(3);
+				link.add(Link);
+			}
+			Newfr news = new Newfr(link.get(0));
+			news.setVisible();
+			
+			
+		}catch(Exception ex) {
+			JOptionPane.showMessageDialog(null, ex);
+		}
+		
+		
+	}
+	
+
+	
+
+
 
 	public static void main(String args[]) {
 

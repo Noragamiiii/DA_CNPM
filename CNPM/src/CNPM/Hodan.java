@@ -7,7 +7,7 @@ public class Hodan {
 	
 	private List<Hodan> hodan = new ArrayList<Hodan>();
 	private int idHodan;
-	private String idVatnuoi;
+	//private String idVatnuoi;
 	private String Username;
 	private String Password;
 	private String Fullname;
@@ -39,14 +39,14 @@ public class Hodan {
 	}
 
 
-	public String getIdVatnuoi() {
-		return idVatnuoi;
-	}
-
-
-	public void setIdVatnuoi(String idVatnuoi) {
-		this.idVatnuoi = idVatnuoi;
-	}
+//	public String getIdVatnuoi() {
+//		return idVatnuoi;
+//	}
+//
+//
+//	public void setIdVatnuoi(String idVatnuoi) {
+//		this.idVatnuoi = idVatnuoi;
+//	}
 
 
 	public String getUsername() {
@@ -153,26 +153,10 @@ public class Hodan {
 	public String toString() {
 	 return String.format("Hodan[idHodan = %s, idVatnuoi = %s, username = %s, password = %s, fullname = %s, dob = %s, "
 	 		+ "gender = %s,  phonenumber = %s, address = %s]", 
-	 		idHodan, idVatnuoi	, Username, Password, Fullname, Dob, Gender, Phonenumber);
+	 		idHodan, Username, Password, Fullname, Dob, Gender, Phonenumber);
 }
 	
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
 
 }
-// đồ họa máy tính
-//vẽ hình ngay giữa cửa sổ
-/*CREATE TABLE "dbo"."HoDan" (
-		"idHoDan" INT NOT NULL,
-		"idVatNuoi" INT,
-		"username" null,
-		"password" null,
-		"hoten" null,
-		"tuoi" INT,
-		"gioitinh" null,
-		"sodienthoai" null,
-		"diachi" null,
-		"sogiayphep" INT,*/
+

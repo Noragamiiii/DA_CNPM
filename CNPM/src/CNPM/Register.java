@@ -268,6 +268,7 @@ public class Register {
 
 				repass = String.valueOf(getrepass);
 				pass = String.valueOf(getpass);
+				String role = "Ho dan";
 
 				if (txtfullname.getText() != null && group.getSelection() != null && txtdob != null
 						&& txtsdt.getText() != null && textAreaadd.getText() != null && txtusername.getText() != null
@@ -279,7 +280,7 @@ public class Register {
 							
 							Hodan user;
 							ArrayList<Hodan> userlist = new ArrayList<Hodan>();
-							user = new Hodan(username, pass, fullname, Gender, phonenumber, address, Dob, "Ho dan");
+							user = new Hodan(username, pass, fullname, Gender, phonenumber, address, Dob, role);
 							userlist.add(user);
 								 pre.setString(1, userlist.get(0).getUsername());
 								 pre.setString(2, userlist.get(0).getPassword());
@@ -288,17 +289,8 @@ public class Register {
 								 pre.setString(5, userlist.get(0).getPhonenumber());
 								 pre.setString(6, userlist.get(0).getAddress());
 								 pre.setString(7, userlist.get(0).getDob());
-								 pre.setString(8, userlist.get(0).getIrole());
+								 pre.setString(8, "Ho dan");
 								 
-//							pre.setString(1, username);
-//							pre.setString(2, pass);
-//							pre.setString(3, fullname);
-//							pre.setString(4, Gender);
-//							pre.setString(5, phonenumber);
-//							pre.setString(6, address);
-//							pre.setString(7, Dob);
-//							pre.setString(8, "Ho Dan");
-							
 								 pre.execute();
 							JOptionPane.showMessageDialog(null, "Successfull Register!");
 							pre.close();
@@ -352,6 +344,7 @@ public class Register {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				login logi = new login();
+				frmDangki.setVisible(false);
 				logi.Show();
 			}
 		});
@@ -484,32 +477,7 @@ public class Register {
 	}
 
 	public void Show() {
-		// TODO Auto-generated method stub
-		//frmDangki.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		frmDangki.setVisible(true);
 	}
 }
-
-/**
- * Initialize the contents of the frame.
- */
-
-/*
- * class RoundedBorder implements Border {
- * 
- * private int radius;
- * 
- * 
- * RoundedBorder(int radius) { this.radius = radius; }
- * 
- * 
- * public Insets getBorderInsets(Component c) { return new Insets(this.radius +
- * 1, this.radius+1, this.radius + 2, this.radius); }
- * 
- * 
- * public boolean isBorderOpaque() { return true; }
- * 
- * 
- * public void paintBorder(Component c, Graphics g, int x, int y, int width, int
- * height) { g.drawRoundRect(x, y, width - 1, height - 1, radius, radius); } }
- */

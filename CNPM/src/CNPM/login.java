@@ -160,15 +160,29 @@ public class login {
 					int count = 0;
 					ArrayList fullname = new ArrayList();
 					ArrayList irole = new ArrayList();
-					String Fullname;
-					String role;
-
+					String username, pass, Fullname, gender, sdt, add, dob, role;  
+					ArrayList<Hodan> hd = new ArrayList<Hodan>();
+					Hodan user;
+					
 					while (rs.next()) {
+						
 						count = count + 1;
+						
+						username = rs.getString(2);
+						pass = rs.getString(3);
 						Fullname = rs.getString(4);
-						fullname.add(Fullname);
+						gender = rs.getString(5);
+						sdt = rs.getString(6);
+						add = rs.getString(7);
+						dob = rs.getString(8);
 						role = rs.getString(9);
+						
+						fullname.add(Fullname);
 						irole.add(role);
+						
+						user = new Hodan(username, pass, Fullname, gender, sdt, add, dob, role);
+						hd.add(user);
+						
 					}
 					if (count == 1) {
 						String fn = (String) fullname.get(0);
@@ -178,8 +192,10 @@ public class login {
 						
 						Dashboard db = new Dashboard(fn, r);
 						db.setiRole(r);
-						
 						db.setVisible(true);
+						
+						EditInfo info = new EditInfo(hd);
+						
 						frmLogin.setVisible(false);
 
 					}

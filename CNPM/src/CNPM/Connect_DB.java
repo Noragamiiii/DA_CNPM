@@ -5,13 +5,14 @@ package CNPM;
 
 	public class Connect_DB {
 		public static Connection getSQLServer() throws SQLException, ClassNotFoundException{
-			String hostName = "localhost";
-			String sqlInstanceName = "SQLEXPRESS";
+			String hostName = "DESKTOP-90UM73C";
+			String sqlInstanceName = "NGUYENNGOCHUYEN";
 			String database = "QuanLiTiemChung";
 			String userName = "sa";
-			String password = "2309";
+			String password = "2309"; //, userName, password, , String userName, String password, , userName, password
 			return getSQLServer(hostName, sqlInstanceName, database, userName, password);
 		}
+		
 		private static Connection getSQLServer(String hostName, String sqlInstanceName, String database, String userName, String password)
 		throws SQLException, ClassNotFoundException{
 			Class.forName("net.sourceforge.jtds.jdbc.Driver");
@@ -22,8 +23,9 @@ package CNPM;
 		}
 		public static void main(String args[]) throws SQLException, ClassNotFoundException{
 			System.out.println("Connect to QuanLiTiemChung");
-			Connection conn = Connect_DB.getSQLServer("localhost", "SQLEXPRESS", "QuanLiTiemChung", "sa", "2309");
+			Connection conn = Connect_DB.getSQLServer("localhost", "NGUYENNGOCHUYEN", "QuanLiTiemChung", "sa", "2309");
 			System.out.println(conn);
 
 }
-	}
+}
+		

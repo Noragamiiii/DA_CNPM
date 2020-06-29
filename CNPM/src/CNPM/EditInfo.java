@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Frame;
 import java.awt.GraphicsEnvironment;
-import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +22,6 @@ import java.util.logging.Logger;
 
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
-import javax.swing.ButtonModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.ImageIcon;
@@ -43,6 +41,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import javax.swing.border.MatteBorder;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import java.awt.Font;
+import javax.swing.SwingConstants;
+import javax.swing.ScrollPaneConstants;
 
 @SuppressWarnings("serial")
 public class EditInfo extends JFrame {
@@ -192,22 +194,23 @@ public class EditInfo extends JFrame {
 		btnExit.setOpaque(true);
 		btnExit.setFocusable(false);
 		btnExit.setContentAreaFilled(false);
-		btnExit.setBackground(SystemColor.inactiveCaptionBorder);
+		btnExit.setBackground(UIManager.getColor("InternalFrame.inactiveBorderColor"));
+		btnExit.addMouseListener(new MouseAdapter() {
+			public void mouseEntered(MouseEvent evt) {
+				btnExitMouseEntered(evt);
+			}
 
+			public void mouseExited(MouseEvent evt) {
+				btnExitMouseExited(evt);
+			}
+		});
+		
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				btnExitActionPerformed(evt);
 			}
 		});
-		btnExit.addMouseListener(new MouseAdapter() {
-			public void mouseEntered(MouseEvent m) {
-				btnExitMouseEntered(m);
-			}
 
-			public void mouseExited(MouseEvent m) {
-				btnExitMouseExited(m);
-			}
-		});
 		GroupLayout gl_pnlHeader = new GroupLayout(pnlHeader);
 		gl_pnlHeader.setHorizontalGroup(gl_pnlHeader.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_pnlHeader.createSequentialGroup().addContainerGap(572, Short.MAX_VALUE)
@@ -247,24 +250,31 @@ public class EditInfo extends JFrame {
 						.addContainerGap()));
 
 		lblFullname = new JLabel();
+		lblFullname.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		lblFullname.setText("Họ và tên");
 
 		lblGender = new JLabel();
+		lblGender.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		lblGender.setText("Giới tính");
 
 		lblDob = new JLabel();
+		lblDob.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		lblDob.setText("Ngày sinh");
 
 		lblAddress = new JLabel();
+		lblAddress.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		lblAddress.setText("Địa chỉ");
 
 		lblPhone = new JLabel();
+		lblPhone.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		lblPhone.setText("Số điện thoại");
 
 		lblUsername = new JLabel();
+		lblUsername.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		lblUsername.setText("Tên đăng nhập");
 
 		lblPassword = new JLabel();
+		lblPassword.setFont(new Font("Segoe UI", Font.BOLD, 12));
 		lblPassword.setText("Mật khẩu");
 
 		txtFullname = new JTextField();
@@ -303,26 +313,11 @@ public class EditInfo extends JFrame {
 		passwordField = new JPasswordField();
 
 		btnUpdate = new JButton();
+		btnUpdate.setFont(new Font("Segoe UI", Font.BOLD, 11));
+		
 		btnUpdate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String username = txtUsername.getText();
-				String fullname = txtFullname.getText();
-				String Gender = getSelectedButtonText(groupGender);
-				String Dob = txtDob.getText();
-				String phonenumber = txtSdt.getText();
-				String address = txtAddress.getText();
-				String role = "Ho dan";
-
-				char getpass[];
-				String pass = "";
-				getpass = passwordField.getPassword();
-				pass = String.valueOf(getpass);
-				Hodan user;
-				ArrayList<Hodan> hs ;
-				user = new Hodan(username, pass, fullname, Gender, phonenumber, address, Dob, role);
-				
-				
-				
+				updateData();
 			}
 		});
 		btnUpdate.setText("Cập nhật");
@@ -330,6 +325,7 @@ public class EditInfo extends JFrame {
 		btnUpdate.setBorder(null);
 
 		btnAdd = new JButton();
+		btnAdd.setFont(new Font("Segoe UI", Font.BOLD, 11));
 		btnAdd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
@@ -368,8 +364,9 @@ public class EditInfo extends JFrame {
 						pre.setString(8, userlist.get(0).getIrole());
 						
 						pre.execute();
-						JOptionPane.showMessageDialog(null, " Successfully!");
-						
+						JOptionPane.showMessageDialog(null, "Successfully!");
+						tablemodel.setRowCount(0);
+						Show_userlist();
 						pre.close();
 
 					} catch (Exception ex) {
@@ -383,24 +380,22 @@ public class EditInfo extends JFrame {
 		btnAdd.setText("Thêm");
 		btnAdd.setBorder(null);
 		btnAdd.setBackground(SystemColor.activeCaption);
-		/*
-		 * "idHoDan" INT NOT NULL, "Username" null, "iPassword" null, "Fullname" null,
-		 * "Gender" null, "PhoneNumber" null, "iAddress" null, "Dob" null,
-		 */
+
 		btnDelete = new JButton();
+		btnDelete.setFont(new Font("Segoe UI", Font.BOLD, 11));
 		btnDelete.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				int row = table.getSelectedRow();
-				int datarow = (int) table.getModel().getValueAt(row, 0);
-				//fillData();
-				
+				int i = table.getSelectedRow();
+				TableModel model = table.getModel();
+				String ID = model.getValueAt(1, 0).toString();
+				fillTextfield();
 				try {
-					String sql1 = "Delete from Person where idHodan = " + datarow + "";
+					String sql1 = "Delete from Person where idHodan = '" + ID + "'";
 					pre = connect.prepareStatement(sql1);
 					pre.execute();
 					
-					JOptionPane.showMessageDialog(null, "Delete sucessfully");
+					JOptionPane.showMessageDialog(null, "Delete sucessfully!");
 					tablemodel.setRowCount(0);
 					Show_userlist();
 					pre.close();
@@ -416,6 +411,7 @@ public class EditInfo extends JFrame {
 		btnDelete.setBackground(SystemColor.activeCaption);
 
 		btnXem = new JButton();
+		btnXem.setFont(new Font("Segoe UI", Font.BOLD, 11));
 		btnXem.addActionListener(new ActionListener() {
 			private int clicked;
 
@@ -433,6 +429,7 @@ public class EditInfo extends JFrame {
 		btnXem.setBackground(SystemColor.activeCaption);
 		
 		JButton btnHy = new JButton();
+		btnHy.setFont(new Font("Segoe UI", Font.BOLD, 11));
 		btnHy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				txtFullname.setText("");
@@ -450,6 +447,16 @@ public class EditInfo extends JFrame {
 		btnHy.setText("Hủy");
 		btnHy.setBorder(null);
 		btnHy.setBackground(SystemColor.activeCaption);
+		
+		JLabel lblIcon = new JLabel("");
+		lblIcon.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+					passwordField.setEchoChar((char)0);
+			}
+		});
+		lblIcon.setHorizontalAlignment(SwingConstants.CENTER);
+		lblIcon.setIcon(new ImageIcon(EditInfo.class.getResource("/gambar/icons8-eye-24.png")));
 		GroupLayout gl_Panel_info = new GroupLayout(Panel_info);
 		gl_Panel_info.setHorizontalGroup(
 			gl_Panel_info.createParallelGroup(Alignment.TRAILING)
@@ -477,8 +484,11 @@ public class EditInfo extends JFrame {
 								.addGap(18)
 								.addComponent(rdbtnKhac, GroupLayout.PREFERRED_SIZE, 60, GroupLayout.PREFERRED_SIZE))
 							.addComponent(txtFullname, GroupLayout.PREFERRED_SIZE, 219, GroupLayout.PREFERRED_SIZE))
-						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap(71, Short.MAX_VALUE))
+						.addGroup(gl_Panel_info.createSequentialGroup()
+							.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 217, GroupLayout.PREFERRED_SIZE)
+							.addGap(4)
+							.addComponent(lblIcon, GroupLayout.PREFERRED_SIZE, 31, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(38, Short.MAX_VALUE))
 				.addGroup(gl_Panel_info.createSequentialGroup()
 					.addGap(30)
 					.addComponent(btnXem, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
@@ -522,9 +532,11 @@ public class EditInfo extends JFrame {
 						.addComponent(txtUsername, GroupLayout.PREFERRED_SIZE, 27, GroupLayout.PREFERRED_SIZE)
 						.addComponent(lblUsername, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE))
 					.addGap(31)
-					.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
-						.addComponent(passwordField, GroupLayout.PREFERRED_SIZE, 29, GroupLayout.PREFERRED_SIZE))
+					.addGroup(gl_Panel_info.createParallelGroup(Alignment.TRAILING, false)
+						.addComponent(lblIcon, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+						.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
+							.addComponent(lblPassword, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
+							.addComponent(passwordField, GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)))
 					.addGap(18)
 					.addGroup(gl_Panel_info.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnDelete, GroupLayout.PREFERRED_SIZE, 24, GroupLayout.PREFERRED_SIZE)
@@ -538,18 +550,35 @@ public class EditInfo extends JFrame {
 		Panel_info.setLayout(gl_Panel_info);
 
 		JScrollPane scrollPane = new JScrollPane();
+		scrollPane.setBackground(UIManager.getColor("InternalFrame.inactiveTitleBackground"));
 
 		GroupLayout gl_panel_Show = new GroupLayout(panel_Show);
-		gl_panel_Show.setHorizontalGroup(gl_panel_Show.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_Show.createSequentialGroup().addContainerGap()
-						.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE).addGap(13)));
-		gl_panel_Show.setVerticalGroup(gl_panel_Show.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel_Show.createSequentialGroup().addContainerGap()
-						.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 174, GroupLayout.PREFERRED_SIZE)
-						.addContainerGap(253, Short.MAX_VALUE)));
+		gl_panel_Show.setHorizontalGroup(
+			gl_panel_Show.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_Show.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrollPane, GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE)
+					.addGap(13))
+		);
+		gl_panel_Show.setVerticalGroup(
+			gl_panel_Show.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_panel_Show.createSequentialGroup()
+					.addContainerGap()
+					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 240, GroupLayout.PREFERRED_SIZE)
+					.addContainerGap(190, Short.MAX_VALUE))
+		);
 		
-		tablemodel = new DefaultTableModel();
+		tablemodel = new DefaultTableModel(); 
 		table = new JTable(tablemodel);
+		table.setBackground(UIManager.getColor("InternalFrame.borderHighlight"));
+		table.setFont(new Font("Segoe UI", Font.PLAIN, 12));
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				fillTextfield();
+		
+			}
+		});
 		tablemodel.addColumn("ID");
 		tablemodel.addColumn("Tên đăng nhập");
 		tablemodel.addColumn("Mật khẩu");
@@ -580,9 +609,6 @@ public class EditInfo extends JFrame {
 
 	}
 
-	public void updateTable() {
-
-	}
 
 	String getSelectedButtonText(ButtonGroup buttonGroup) {
 		for (@SuppressWarnings("rawtypes")
@@ -672,11 +698,11 @@ public class EditInfo extends JFrame {
 		}
 
 	}
-
+// where irole like 'Ho dan'
 	public ArrayList<Hodan> UserList() {
 		ArrayList<Hodan> user = new ArrayList<Hodan>();
 		try {
-			String sql = "select idHoDan, Username, iPassword, Fullname, Gender, PhoneNumber, iAddress, Dob from Person";
+			String sql = "select idHoDan, Username, iPassword, Fullname, Gender, PhoneNumber, iAddress, Dob from Person where irole like 'Ho dan' ";
 			sta = connect.createStatement();
 			rs = sta.executeQuery(sql);
 			Hodan userlist;
@@ -711,11 +737,9 @@ public class EditInfo extends JFrame {
 	}
 
 	public JRadioButton getButton(String Text) {
-		// JRadioButton rd = new JRadioButton(Text);
 		switch (Text) {
 		case "Nữ":
 			return rdbtnNu;
-
 		case "Nam":
 			return rdbtnNam;
 		}
@@ -734,47 +758,65 @@ public class EditInfo extends JFrame {
 		
 		return userlist;
 	}
-	public void fillData() {
 	
-		int row = table.getRowCount();
-		String datarow = table.getModel().getValueAt(row, 0).toString();
+	
+	public void fillTextfield() {
+		int i = table.getSelectedRow();
+		TableModel model = table.getModel();
+		txtFullname.setText(model.getValueAt(i, 3).toString());
+		txtAddress.setText(model.getValueAt(i, 6).toString());
+		txtUsername.setText(model.getValueAt(i, 1).toString());
+		txtSdt.setText(model.getValueAt(i, 5).toString());
+		txtDob.setText(model.getValueAt(i, 7).toString());
+		String gender = model.getValueAt(i, 4).toString();
+		String password  = model.getValueAt(i, 2).toString();
+		passwordField.setText(password);
 		
+		if(gender.equals("Nam")) {
+			rdbtnNam.setSelected(true);
+		}
+		else if(gender.equals("Nữ")) {
+			rdbtnNu.setSelected(true);
+		}
+		else {
+			rdbtnKhac.setSelected(true);
+		}
+		
+	}
+	public void updateData() {
+		int i = table.getSelectedRow();
+		TableModel model = table.getModel();
+		int ID = Integer.parseInt(model.getValueAt(i, 0).toString());
+		String fullname = txtFullname.getText();
+		String username = txtUsername.getText();
+		String sdt = txtSdt.getText();
+		String gender = getSelectedButtonText(groupGender);
+		String address = txtAddress.getText();
+		char getpass[];
+		String pass = "";
+		getpass = passwordField.getPassword();
+		pass = String.valueOf(getpass);
 		try {
-			
-			String sql = "select Username, iPassword, Fullname, Gender, PhoneNumber, iAddress, Dob from Person where idHodan = " + datarow + "" ;
-			
-			pre = connect.prepareStatement(sql);
-			rs = pre.executeQuery();
-
-			while(rs.next()) {
-				String Username = rs.getString(2);
-				String Password = rs.getString(3);
-				String Fullname = rs.getString(4);
-				String Gender = rs.getString(5);
-				String Phone = rs.getString(6);
-				String Address = rs.getString(7);
-				String Dob = rs.getString(8);
-				
-				txtFullname.setText(Fullname);
-				passwordField.setText(Password);
-				txtUsername.setText(Username);
-				txtSdt.setText(Phone);
-				txtDob.setText(Dob);
-				txtAddress.setText(Address);
-				
-				if(Gender.equals("Name")) {
-					rdbtnNam.setSelected(true);
-				}
-				if(Gender.equals("Nữ")) {
-					rdbtnNu.setSelected(true);
-				}
-				else {
-					rdbtnKhac.setSelected(true);
-				}
-			}
-			
-			}catch(Exception ex) {
-				JOptionPane.showMessageDialog(null, ex);
-			}
+		String sql = "update Person set Username = ?, iPassword = ?, Fullname = ?, Gender = ?, PhoneNumber = ?, iAddress = ? where idHodan = " + ID;
+		
+		pre = connect.prepareStatement(sql);
+		
+		pre.setString(1, username);
+		pre.setString(2, pass);
+		pre.setString(3, fullname);
+		pre.setString(4, gender);
+		pre.setString(5, sdt);
+		pre.setString(6, address);
+		
+		pre.execute();
+		
+		JOptionPane.showMessageDialog(null, "Update successfully");
+		tablemodel.setRowCount(0);
+		Show_userlist();
+		
+		}catch(Exception ex) {
+			JOptionPane.showMessageDialog(null, "Can not update!");
+		}
+		
 	}
 }
