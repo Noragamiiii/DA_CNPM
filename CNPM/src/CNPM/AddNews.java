@@ -63,7 +63,7 @@ public class AddNews extends JFrame {
 		} catch (ClassNotFoundException | SQLException e1) {
 			e1.printStackTrace();
 		}
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 540, 233);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -119,6 +119,7 @@ public class AddNews extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				txtTitle.setText("");
 				txtLink.setText("");
+				setVisible(false);
 			}
 		});
 		btnHy.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -133,7 +134,7 @@ public class AddNews extends JFrame {
 		String link = txtLink.getText();
 
 		Date date = new Date();  
-	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");  
+	    SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");  // yyyy/MM/dd
 	    String strDate = formatter.format(date); 
 	 
 		

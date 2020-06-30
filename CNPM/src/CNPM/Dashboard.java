@@ -60,9 +60,9 @@ public class Dashboard extends JFrame {
 	private JButton btnExit, btnMaximize, btnMinimize, btnNews, btnTimeline;
 	private JLabel fullname, jLabel12, jLabel13, jLabel17, jLabel6, jLabel7, jLabel8, jLabel9, lblNewLabel, lblNews,
 			lblTimeline, lblfullname, label_1;
-	private JPanel Hodan_management, DangkiTiem, LichDaDangKy, jPanel4, pnlBody, pnlHeader, pnlMenu, pnlNews, LichTiem, panel, Update_Vaccine, UpdateNews;
+	private JPanel Hodan_management, DangkiTiem, LichDaDangKy, lichtiem, pnlBody, pnlHeader, pnlMenu, pnlNews, LichTiem, panel, Update_Vaccine, UpdateNews;
 	private JScrollPane jspTimeline, jspNews;
-	private GroupLayout pnlHeaderLayout, pnlMenuLayout, gl_Hodan_management, gl_DangkiTiem, gl_LichDaDangKy, jPanel4Layout,
+	private GroupLayout pnlHeaderLayout, pnlMenuLayout, gl_Hodan_management, gl_DangkiTiem, gl_LichDaDangKy, gl_lichtiem,
 			gl_LichTiem, layout, gl_panel, pnlNewsLayout;
 	public String iRole;
 	Statement sta;
@@ -71,6 +71,7 @@ public class Dashboard extends JFrame {
 	DefaultTableModel tablemodel;
 	JTable tabel;
 	JScrollPane scr;
+	xxx getLink;
 	
 	public String getiRole() {
 		return iRole;
@@ -101,6 +102,10 @@ public class Dashboard extends JFrame {
 			Update_Vaccine.setEnabled(true);
 			Hodan_management.setEnabled(true);
 		}
+		
+	}
+	public Dashboard(xxx link) {
+		getLink = link;
 	}
 	
 	public Dashboard() {
@@ -161,8 +166,8 @@ public class Dashboard extends JFrame {
 		LichDaDangKy.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 204)));
 		jLabel8 = new JLabel();
 		jLabel13 = new JLabel();
-		jPanel4 = new JPanel();
-		jPanel4.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 255)));
+		lichtiem = new JPanel();
+		lichtiem.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 255)));
 		jLabel9 = new JLabel();
 		pnlNews = new JPanel();
 		pnlNews.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -450,8 +455,8 @@ public class Dashboard extends JFrame {
 						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
 		LichDaDangKy.setLayout(gl_LichDaDangKy);
 
-		jPanel4.setBackground(new Color(212, 233, 238));
-		jPanel4.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		lichtiem.setBackground(new Color(212, 233, 238));
+		lichtiem.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
 		jLabel9.setBackground(new Color(186, 207, 250));
 		jLabel9.setFont(new Font("Segoe UI", Font.BOLD, 14));
@@ -464,17 +469,17 @@ public class Dashboard extends JFrame {
 		lblNewLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		lblNewLabel.setIcon(new ImageIcon(Dashboard.class.getResource("/gambar/schedule.png")));
 
-		jPanel4Layout = new GroupLayout(jPanel4);
-		jPanel4Layout.setHorizontalGroup(jPanel4Layout.createParallelGroup(Alignment.TRAILING)
+		gl_lichtiem = new GroupLayout(lichtiem);
+		gl_lichtiem.setHorizontalGroup(gl_lichtiem.createParallelGroup(Alignment.TRAILING)
 				.addComponent(jLabel9, GroupLayout.DEFAULT_SIZE, 250, Short.MAX_VALUE)
-				.addGroup(Alignment.LEADING, jPanel4Layout.createSequentialGroup().addGap(19)
+				.addGroup(Alignment.LEADING, gl_lichtiem.createSequentialGroup().addGap(19)
 						.addComponent(lblNewLabel, GroupLayout.DEFAULT_SIZE, 193, Short.MAX_VALUE).addGap(24)));
-		jPanel4Layout.setVerticalGroup(jPanel4Layout.createParallelGroup(Alignment.LEADING)
-				.addGroup(jPanel4Layout.createSequentialGroup()
+		gl_lichtiem.setVerticalGroup(gl_lichtiem.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_lichtiem.createSequentialGroup()
 						.addComponent(jLabel9, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE).addGap(18)
 						.addComponent(lblNewLabel, GroupLayout.PREFERRED_SIZE, 167, GroupLayout.PREFERRED_SIZE)
 						.addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)));
-		jPanel4.setLayout(jPanel4Layout);
+		lichtiem.setLayout(gl_lichtiem);
 		
 		 Update_Vaccine = new JPanel();
 		Update_Vaccine.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 102, 255)));
@@ -563,7 +568,7 @@ public class Dashboard extends JFrame {
 				.addGroup(gl_LichTiem.createSequentialGroup()
 					.addGap(70)
 					.addGroup(gl_LichTiem.createParallelGroup(Alignment.TRAILING)
-						.addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lichtiem, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(Hodan_management, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(50)
 					.addGroup(gl_LichTiem.createParallelGroup(Alignment.LEADING)
@@ -585,7 +590,7 @@ public class Dashboard extends JFrame {
 						.addComponent(DangkiTiem, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
 					.addGap(27)
 					.addGroup(gl_LichTiem.createParallelGroup(Alignment.LEADING)
-						.addComponent(jPanel4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lichtiem, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 						.addComponent(Update_Vaccine, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE)
 						.addComponent(UpdateNews, GroupLayout.PREFERRED_SIZE, 238, GroupLayout.PREFERRED_SIZE))
 					.addContainerGap(50, Short.MAX_VALUE))
@@ -821,9 +826,12 @@ public class Dashboard extends JFrame {
 			}
 			String l = link.get(0);
 			
-			Newfr news = new Newfr(l);
+			getLink = new xxx();
+			getLink.getdata[0] = l; 
+			getLink.getdat();
 			
-			news.setVisible();
+			getLink.setVisible(true);
+			
 			
 		}catch(Exception ex) {
 			JOptionPane.showMessageDialog(null, ex);
