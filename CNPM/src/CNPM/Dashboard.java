@@ -82,7 +82,6 @@ public class Dashboard extends JFrame {
 	}
 
 	private String name;
-	private JTable table;
 	
 	
 	public String getName() {
@@ -617,46 +616,23 @@ public class Dashboard extends JFrame {
 		panel = new JPanel();
 		panel.setBackground(UIManager.getColor("InternalFrame.inactiveTitleGradient"));
 		jspNews.setViewportView(panel);
-		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBackground(UIManager.getColor("InternalFrame.activeTitleBackground"));
-		scrollPane.setBorder(null);
-		scrollPane.setFont(new Font("Segoe UI", Font.PLAIN, 14));
 		gl_panel = new GroupLayout(panel);
 		gl_panel.setHorizontalGroup(
 			gl_panel.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panel.createSequentialGroup()
-					.addGap(69)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 739, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(190, Short.MAX_VALUE))
+				.addGap(0, 998, Short.MAX_VALUE)
 		);
 		gl_panel.setVerticalGroup(
-			gl_panel.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_panel.createSequentialGroup()
-					.addGap(63)
-					.addComponent(scrollPane, GroupLayout.PREFERRED_SIZE, 236, GroupLayout.PREFERRED_SIZE)
-					.addContainerGap(636, Short.MAX_VALUE))
+			gl_panel.createParallelGroup(Alignment.LEADING)
+				.addGap(0, 935, Short.MAX_VALUE)
 		);
 		
 		panel.setLayout(gl_panel);
 		pnlNews.setLayout(pnlNewsLayout);
 		
-		tablemodel = new DefaultTableModel(); 
-		table = new JTable(tablemodel);
-		table.setBackground(UIManager.getColor("InternalFrame.borderHighlight"));
-		table.setFont(new Font("Segoe UI", Font.BOLD, 13));
+		tablemodel = new DefaultTableModel();
 		
 		tablemodel.addColumn("Tin tức");
 		tablemodel.addColumn("Ngày đăng");
-		
-		scrollPane.setViewportView(table);
-		table.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				getLink();
-				
-			}
-		});
 		
 		panel.setLayout(gl_panel);
 		pnlNews.setLayout(pnlNewsLayout);
@@ -759,8 +735,9 @@ public class Dashboard extends JFrame {
 		pnlBody.add(pnlNews);
 		pnlBody.repaint();
 		pnlBody.revalidate();
-		tablemodel.setRowCount(0);
-		Show_userlist();
+		Newss news = new Newss();
+		news.setVisible(true);
+		
 	}
 
 	private void btnTimelineActionPerformed(ActionEvent evt) {
@@ -794,50 +771,7 @@ public class Dashboard extends JFrame {
 		return news;
 	}
 	
-	public void Show_userlist() {
-		ArrayList<News> list = UserList();
-		tablemodel = (DefaultTableModel)table.getModel();
-
-		Object[] row = new Object[2];
-		for (int i = 0; i < list.size(); i++) {
-			row[0] = list.get(i).getTitle();
-			row[1] = list.get(i).getDatepost();
-			tablemodel.addRow(row); 
-		}
 	
-	}
-	public void getLink() {
-		
-		int i = table.getSelectedRow();
-		TableModel model = table.getModel();
-		String title = model.getValueAt(i, 0 ).toString();
-		
-		try {
-			String sql = "Select * from News where Title like N'" + title +"'"; 
-			sta = connect.createStatement();
-			rs = sta.executeQuery(sql);
-			
-			ArrayList<String> link = new ArrayList<String>();
-			
-			while(rs.next()) {
-				String Link = rs.getString(3);
-				link.add(Link);
-			
-			}
-			String l = link.get(0);
-			
-			getLink = new xxx();
-			getLink.getdata[0] = l; 
-			getLink.getdat();
-			
-			getLink.setVisible(true);
-			
-			
-		}catch(Exception ex) {
-			JOptionPane.showMessageDialog(null, ex);
-		}
-		
-	}
 
 	public static void main(String args[]) {
 
